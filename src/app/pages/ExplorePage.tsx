@@ -85,7 +85,6 @@ export default function ExplorePage() {
       </button>
 
       <BottomNavigation />
-      <DesktopNavigation />
     </div>
   );
 }
