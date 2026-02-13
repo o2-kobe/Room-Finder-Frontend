@@ -9,7 +9,7 @@ export function StatusBadge({ status, size = "md" }: StatusBadgeProps) {
   const statusConfig = {
     available: {
       label: "Available",
-      color: "bg-[#10b981] text-white",
+      color: "bg-green-700 text-white",
     },
     "recently-updated": {
       label: "Recently Updated",
@@ -26,10 +26,12 @@ export function StatusBadge({ status, size = "md" }: StatusBadgeProps) {
     size === "sm" ? "px-2 py-0.5 text-xs" : "px-3 py-1 text-sm";
 
   return (
-    <span
-      className={`inline-flex items-center rounded-full ${sizeClasses} ${config.color}`}
-    >
-      {config.label}
-    </span>
+    <p className=" bg-white rounded-full flex items-center p-0.5">
+      <span
+        className={`inline-flex items-center rounded-full ${sizeClasses} ${config.color}`}
+      >
+        {config.label}
+      </span>
+    </p>
   );
 }

@@ -56,12 +56,12 @@ export function ListingCard({ listing, onClick }: ListingCardProps) {
           )}
         </div>
 
-        {listing.price && (
-          <div className="text-lg text-accent">
-            GH₵ {listing.price}
+        <div className="text-lg text-accent">
+          GH₵ {listing.price || "N/A"}
+          {listing.type === "private" && (
             <span className="text-sm text-muted-foreground">/month</span>
-          </div>
-        )}
+          )}
+        </div>
 
         <div className="flex items-center gap-1 text-xs text-muted-foreground">
           <Clock className="w-3 h-3" />
