@@ -5,10 +5,10 @@
   --background: #fafafa;
   --foreground: #1a1a2e;
   --card: #ffffff;
-  --card-foreground: #1a1a2e;
+  --card-foreground: #15152a;
   --popover: oklch(1 0 0);
   --popover-foreground: oklch(0.145 0 0);
-  --primary: #1a1a2e;
+  --primary: #10102d;
   --primary-foreground: #ffffff;
   --secondary: oklch(0.95 0.0058 264.53);
   --secondary-foreground: #030213;
