@@ -1,40 +1,42 @@
-import { useState } from 'react';
-import { useNavigate } from 'react-router';
-import { Search, MapIcon } from 'lucide-react';
-import { mockListings } from '../data/mockData';
-import { ListingCard } from '../components/ListingCard';
-import { CategoryToggle } from '../components/CategoryToggle';
-import { BottomNavigation } from '../components/BottomNavigation';
-import { DesktopNavigation } from '../components/DesktopNavigation';
-import { MapView } from '../components/MapView';
-import { ListingType } from '../types';
+import { useState } from "react";
+import { useNavigate } from "react-router";
+import { Search, MapIcon } from "lucide-react";
+import { mockListings } from "../data/mockData";
+import { ListingCard } from "../components/ListingCard";
+import { CategoryToggle } from "../components/CategoryToggle";
+import { BottomNavigation } from "../components/BottomNavigation";
+import { DesktopNavigation } from "../components/DesktopNavigation";
+import { MapView } from "../components/MapView";
+import { type ListingType } from "../types";
 
 export default function HomePage() {
   const navigate = useNavigate();
-  const [category, setCategory] = useState<ListingType | 'all'>('all');
-  const [searchQuery, setSearchQuery] = useState('');
+  const [category, setCategory] = useState<ListingType | "all">("all");
+  const [searchQuery, setSearchQuery] = useState("");
 
   const filteredListings = mockListings.filter((listing) => {
-    const matchesCategory = category === 'all' || listing.type === category;
+    const matchesCategory = category === "all" || listing.type === category;
     const matchesSearch =
-      searchQuery === '' ||
+      searchQuery === "" ||
       listing.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
       listing.location.area.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      listing.location.university.toLowerCase().includes(searchQuery.toLowerCase());
+      listing.location.university
+        .toLowerCase()
+        .includes(searchQuery.toLowerCase());
     return matchesCategory && matchesSearch;
   });
 
   const featuredListings = filteredListings.filter(
-    (listing) => listing.availability === 'available'
+    (listing) => listing.availability === "available",
   );
   const recentlyUpdated = filteredListings
-    .filter((listing) => listing.availability === 'recently-updated')
+    .filter((listing) => listing.availability === "recently-updated")
     .slice(0, 3);
 
   return (
     <div className="min-h-screen bg-background pb-20 md:pb-0">
       <DesktopNavigation />
-      
+
       {/* Header */}
       <header className="bg-primary text-primary-foreground px-4 py-6">
         <div className="max-w-screen-xl mx-auto">
@@ -74,10 +76,7 @@ export default function HomePage() {
             <h2 className="text-xl mb-4">Recently Updated</h2>
             <div className="flex gap-4 overflow-x-auto pb-2 snap-x snap-mandatory">
               {recentlyUpdated.map((listing) => (
-                <div
-                  key={listing.id}
-                  className="flex-shrink-0 w-80 snap-start"
-                >
+                <div key={listing.id} className="flex-shrink-0 w-80 snap-start">
                   <ListingCard listing={listing} />
                 </div>
               ))}
@@ -90,7 +89,7 @@ export default function HomePage() {
           <div className="flex items-center justify-between mb-4">
             <h2 className="text-xl">Explore on Map</h2>
             <button
-              onClick={() => navigate('/map')}
+              onClick={() => navigate("/map")}
               className="flex items-center gap-2 text-accent hover:text-accent/80 transition-colors"
             >
               <MapIcon className="w-5 h-5" />
@@ -103,7 +102,7 @@ export default function HomePage() {
         {/* All Listings Link */}
         <div className="text-center pb-8">
           <button
-            onClick={() => navigate('/explore')}
+            onClick={() => navigate("/explore")}
             className="px-8 py-3 bg-primary text-primary-foreground rounded-2xl hover:bg-primary/90 transition-colors"
           >
             View All Listings

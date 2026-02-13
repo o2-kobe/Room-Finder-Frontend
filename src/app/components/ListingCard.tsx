@@ -1,8 +1,8 @@
-import { useNavigate } from 'react-router';
-import { MapPin, Clock } from 'lucide-react';
-import { Listing } from '../types';
-import { StatusBadge } from './StatusBadge';
-import { formatDistanceToNow } from 'date-fns';
+import { useNavigate } from "react-router";
+import { MapPin, Clock } from "lucide-react";
+import { type Listing } from "../types";
+import { StatusBadge } from "./StatusBadge";
+import { formatDistanceToNow } from "date-fns";
 
 interface ListingCardProps {
   listing: Listing;
@@ -16,9 +16,10 @@ export function ListingCard({ listing, onClick }: ListingCardProps) {
     if (onClick) {
       onClick();
     } else {
-      const path = listing.type === 'hostel' 
-        ? `/hostel/${listing.id}` 
-        : `/rental/${listing.id}`;
+      const path =
+        listing.type === "hostel"
+          ? `/hostel/${listing.id}`
+          : `/rental/${listing.id}`;
       navigate(path);
     }
   };
@@ -37,7 +38,7 @@ export function ListingCard({ listing, onClick }: ListingCardProps) {
         <div className="absolute top-3 right-3">
           <StatusBadge status={listing.availability} size="sm" />
         </div>
-        {listing.type === 'hostel' && (
+        {listing.type === "hostel" && (
           <div className="absolute top-3 left-3 bg-primary/90 text-primary-foreground px-2 py-1 rounded-lg text-xs">
             Hostel
           </div>
@@ -64,7 +65,10 @@ export function ListingCard({ listing, onClick }: ListingCardProps) {
 
         <div className="flex items-center gap-1 text-xs text-muted-foreground">
           <Clock className="w-3 h-3" />
-          <span>Updated {formatDistanceToNow(listing.lastUpdated, { addSuffix: true })}</span>
+          <span>
+            Updated{" "}
+            {formatDistanceToNow(listing.lastUpdated, { addSuffix: true })}
+          </span>
         </div>
       </div>
     </div>

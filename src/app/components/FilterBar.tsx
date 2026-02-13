@@ -1,6 +1,6 @@
-import { Search, SlidersHorizontal } from 'lucide-react';
-import { CategoryToggle } from './CategoryToggle';
-import { FilterState } from '../types';
+import { Search, SlidersHorizontal } from "lucide-react";
+import { CategoryToggle } from "./CategoryToggle";
+import { type FilterState } from "../types";
 
 interface FilterBarProps {
   filters: FilterState;

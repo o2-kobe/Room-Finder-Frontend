@@ -1,255 +1,252 @@
-import { Listing } from '../types';
+import { type Listing } from "../types";
 
 export const mockListings: Listing[] = [
   {
-    id: '1',
-    type: 'hostel',
-    title: 'University of Ghana Main Hostel',
-    description: 'Modern hostel facility with various room options near campus',
+    id: "1",
+    type: "hostel",
+    title: "University of Ghana Main Hostel",
+    description: "Modern hostel facility with various room options near campus",
     location: {
       lat: 5.6515,
-      lng: -0.1870,
-      address: 'Legon Campus, Accra',
-      area: 'Legon',
-      university: 'University of Ghana',
-      distance: '0.5 km'
+      lng: -0.187,
+      address: "Legon Campus, Accra",
+      area: "Legon",
+      university: "University of Ghana",
+      distance: "0.5 km",
     },
-    availability: 'available',
-    lastUpdated: new Date('2026-02-10'),
+    availability: "available",
+    lastUpdated: new Date("2026-02-10"),
     images: [
-      'https://images.unsplash.com/photo-1555854877-bab0e564b8d5?w=800',
-      'https://images.unsplash.com/photo-1522771739844-6a9f6d5f14af?w=800'
+      "https://images.unsplash.com/photo-1555854877-bab0e564b8d5?w=800",
+      "https://images.unsplash.com/photo-1522771739844-6a9f6d5f14af?w=800",
     ],
     contact: {
-      name: 'Hostel Management',
-      phone: '+233 20 123 4567',
-      email: 'hostel@ug.edu.gh'
+      name: "Hostel Management",
+      phone: "+233 20 123 4567",
+      email: "hostel@ug.edu.gh",
     },
     roomTypes: [
       {
-        id: 'r1',
-        type: 'Single Room',
+        id: "r1",
+        type: "Single Room",
         price: 1200,
-        availability: 'available',
-        capacity: 1
+        availability: "available",
+        capacity: 1,
       },
       {
-        id: 'r2',
-        type: 'Double Room',
+        id: "r2",
+        type: "Double Room",
         price: 800,
-        availability: 'available',
-        capacity: 2
+        availability: "available",
+        capacity: 2,
       },
       {
-        id: 'r3',
-        type: 'Four-Person Suite',
+        id: "r3",
+        type: "Four-Person Suite",
         price: 600,
-        availability: 'recently-updated',
-        capacity: 4
-      }
-    ]
+        availability: "recently-updated",
+        capacity: 4,
+      },
+    ],
   },
   {
-    id: '2',
-    type: 'private',
-    title: 'Cozy Studio Apartment in East Legon',
-    description: 'Fully furnished studio with kitchen, bathroom, and Wi-Fi',
+    id: "2",
+    type: "private",
+    title: "Cozy Studio Apartment in East Legon",
+    description: "Fully furnished studio with kitchen, bathroom, and Wi-Fi",
     location: {
       lat: 5.6437,
       lng: -0.1562,
-      address: 'East Legon, Accra',
-      area: 'East Legon',
-      university: 'University of Ghana',
-      distance: '2.3 km'
+      address: "East Legon, Accra",
+      area: "East Legon",
+      university: "University of Ghana",
+      distance: "2.3 km",
     },
-    availability: 'available',
-    lastUpdated: new Date('2026-02-12'),
+    availability: "available",
+    lastUpdated: new Date("2026-02-12"),
     images: [
-      'https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?w=800',
-      'https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?w=800'
+      "https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?w=800",
+      "https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?w=800",
     ],
     contact: {
-      name: 'Kwame Mensah',
-      phone: '+233 24 555 7890'
+      name: "Kwame Mensah",
+      phone: "+233 24 555 7890",
     },
-    price: 1500
+    price: 1500,
   },
   {
-    id: '3',
-    type: 'private',
-    title: 'Spacious 2BR Near KNUST Campus',
-    description: 'Two bedroom apartment, close to campus with parking',
+    id: "3",
+    type: "private",
+    title: "Spacious 2BR Near KNUST Campus",
+    description: "Two bedroom apartment, close to campus with parking",
     location: {
       lat: 6.6745,
       lng: -1.5716,
-      address: 'Ayeduase, Kumasi',
-      area: 'Ayeduase',
-      university: 'KNUST',
-      distance: '1.2 km'
+      address: "Ayeduase, Kumasi",
+      area: "Ayeduase",
+      university: "KNUST",
+      distance: "1.2 km",
     },
-    availability: 'recently-updated',
-    lastUpdated: new Date('2026-02-08'),
+    availability: "recently-updated",
+    lastUpdated: new Date("2026-02-08"),
     images: [
-      'https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?w=800',
-      'https://images.unsplash.com/photo-1574643156929-51fa098b0394?w=800'
+      "https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?w=800",
+      "https://images.unsplash.com/photo-1574643156929-51fa098b0394?w=800",
     ],
     contact: {
-      name: 'Ama Asante',
-      phone: '+233 26 789 4561'
+      name: "Ama Asante",
+      phone: "+233 26 789 4561",
     },
-    price: 2000
+    price: 2000,
   },
   {
-    id: '4',
-    type: 'hostel',
-    title: 'KNUST Unity Hall',
-    description: 'Traditional hall accommodation with shared facilities',
+    id: "4",
+    type: "hostel",
+    title: "KNUST Unity Hall",
+    description: "Traditional hall accommodation with shared facilities",
     location: {
       lat: 6.6751,
       lng: -1.5692,
-      address: 'KNUST Campus, Kumasi',
-      area: 'KNUST',
-      university: 'KNUST',
-      distance: '0.3 km'
+      address: "KNUST Campus, Kumasi",
+      area: "KNUST",
+      university: "KNUST",
+      distance: "0.3 km",
     },
-    availability: 'available',
-    lastUpdated: new Date('2026-02-11'),
-    images: [
-      'https://images.unsplash.com/photo-1555854877-bab0e564b8d5?w=800'
-    ],
+    availability: "available",
+    lastUpdated: new Date("2026-02-11"),
+    images: ["https://images.unsplash.com/photo-1555854877-bab0e564b8d5?w=800"],
     contact: {
-      name: 'Hall Administration',
-      phone: '+233 32 206 0001',
-      email: 'unity@knust.edu.gh'
+      name: "Hall Administration",
+      phone: "+233 32 206 0001",
+      email: "unity@knust.edu.gh",
     },
     roomTypes: [
       {
-        id: 'r4',
-        type: 'Single Room',
+        id: "r4",
+        type: "Single Room",
         price: 1000,
-        availability: 'available',
-        capacity: 1
+        availability: "available",
+        capacity: 1,
       },
       {
-        id: 'r5',
-        type: 'Double Room',
+        id: "r5",
+        type: "Double Room",
         price: 700,
-        availability: 'available',
-        capacity: 2
-      }
-    ]
+        availability: "available",
+        capacity: 2,
+      },
+    ],
   },
   {
-    id: '5',
-    type: 'private',
-    title: 'Modern Self-Contained Room',
-    description: 'Single occupancy with private bathroom and study area',
+    id: "5",
+    type: "private",
+    title: "Modern Self-Contained Room",
+    description: "Single occupancy with private bathroom and study area",
     location: {
-      lat: 5.6520,
-      lng: -0.1800,
-      address: 'Okponglo, Accra',
-      area: 'Okponglo',
-      university: 'University of Ghana',
-      distance: '1.5 km'
+      lat: 5.652,
+      lng: -0.18,
+      address: "Okponglo, Accra",
+      area: "Okponglo",
+      university: "University of Ghana",
+      distance: "1.5 km",
     },
-    availability: 'available',
-    lastUpdated: new Date('2026-02-13'),
+    availability: "available",
+    lastUpdated: new Date("2026-02-13"),
     images: [
-      'https://images.unsplash.com/photo-1540518614846-7eded433c457?w=800',
-      'https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?w=800'
+      "https://images.unsplash.com/photo-1540518614846-7eded433c457?w=800",
+      "https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?w=800",
     ],
     contact: {
-      name: 'Yaw Boateng',
-      phone: '+233 20 999 8888'
+      name: "Yaw Boateng",
+      phone: "+233 20 999 8888",
     },
-    price: 1100
+    price: 1100,
   },
   {
-    id: '6',
-    type: 'private',
-    title: 'Student House Share - 3BR',
-    description: 'Share a 3-bedroom house with other students, all amenities included',
+    id: "6",
+    type: "private",
+    title: "Student House Share - 3BR",
+    description:
+      "Share a 3-bedroom house with other students, all amenities included",
     location: {
       lat: 5.6505,
-      lng: -0.1920,
-      address: 'Atomic Junction, Accra',
-      area: 'Atomic',
-      university: 'University of Ghana',
-      distance: '2.8 km'
+      lng: -0.192,
+      address: "Atomic Junction, Accra",
+      area: "Atomic",
+      university: "University of Ghana",
+      distance: "2.8 km",
     },
-    availability: 'inactive',
-    lastUpdated: new Date('2026-01-20'),
+    availability: "inactive",
+    lastUpdated: new Date("2026-01-20"),
     images: [
-      'https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?w=800'
+      "https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?w=800",
     ],
     contact: {
-      name: 'Abena Owusu',
-      phone: '+233 24 111 2222'
+      name: "Abena Owusu",
+      phone: "+233 24 111 2222",
     },
-    price: 900
+    price: 900,
   },
   {
-    id: '7',
-    type: 'hostel',
-    title: 'Cape Coast University Hall A',
-    description: 'On-campus accommodation with dining facilities',
+    id: "7",
+    type: "hostel",
+    title: "Cape Coast University Hall A",
+    description: "On-campus accommodation with dining facilities",
     location: {
       lat: 5.1079,
       lng: -1.2921,
-      address: 'UCC Campus, Cape Coast',
-      area: 'Cape Coast',
-      university: 'University of Cape Coast',
-      distance: '0.2 km'
+      address: "UCC Campus, Cape Coast",
+      area: "Cape Coast",
+      university: "University of Cape Coast",
+      distance: "0.2 km",
     },
-    availability: 'recently-updated',
-    lastUpdated: new Date('2026-02-09'),
-    images: [
-      'https://images.unsplash.com/photo-1555854877-bab0e564b8d5?w=800'
-    ],
+    availability: "recently-updated",
+    lastUpdated: new Date("2026-02-09"),
+    images: ["https://images.unsplash.com/photo-1555854877-bab0e564b8d5?w=800"],
     contact: {
-      name: 'Hall Warden',
-      phone: '+233 33 213 2000',
-      email: 'halla@ucc.edu.gh'
+      name: "Hall Warden",
+      phone: "+233 33 213 2000",
+      email: "halla@ucc.edu.gh",
     },
     roomTypes: [
       {
-        id: 'r6',
-        type: 'Single Room',
+        id: "r6",
+        type: "Single Room",
         price: 900,
-        availability: 'recently-updated',
-        capacity: 1
+        availability: "recently-updated",
+        capacity: 1,
       },
       {
-        id: 'r7',
-        type: 'Triple Room',
+        id: "r7",
+        type: "Triple Room",
         price: 550,
-        availability: 'available',
-        capacity: 3
-      }
-    ]
+        availability: "available",
+        capacity: 3,
+      },
+    ],
   },
   {
-    id: '8',
-    type: 'private',
-    title: 'Affordable Room in Madina',
-    description: 'Budget-friendly accommodation with shared kitchen',
+    id: "8",
+    type: "private",
+    title: "Affordable Room in Madina",
+    description: "Budget-friendly accommodation with shared kitchen",
     location: {
-      lat: 5.6800,
+      lat: 5.68,
       lng: -0.1667,
-      address: 'Madina, Accra',
-      area: 'Madina',
-      university: 'University of Ghana',
-      distance: '4.5 km'
+      address: "Madina, Accra",
+      area: "Madina",
+      university: "University of Ghana",
+      distance: "4.5 km",
     },
-    availability: 'available',
-    lastUpdated: new Date('2026-02-11'),
+    availability: "available",
+    lastUpdated: new Date("2026-02-11"),
     images: [
-      'https://images.unsplash.com/photo-1540518614846-7eded433c457?w=800'
+      "https://images.unsplash.com/photo-1540518614846-7eded433c457?w=800",
     ],
     contact: {
-      name: 'Kofi Agyeman',
-      phone: '+233 27 333 4444'
+      name: "Kofi Agyeman",
+      phone: "+233 27 333 4444",
     },
-    price: 700
-  }
+    price: 700,
+  },
 ];
