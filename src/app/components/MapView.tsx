@@ -2,6 +2,9 @@ import { MapContainer, TileLayer, Marker, Popup, useMap } from "react-leaflet";
 import { Icon, type LatLngExpression } from "leaflet";
 import { type Listing } from "../types";
 import { useEffect } from "react";
+import { StatusBadge } from "./StatusBadge";
+import { MapPin } from "lucide-react";
+import { useNavigate } from "react-router";
 
 interface MapViewProps {
   listings: Listing[];
@@ -56,9 +59,9 @@ export function MapView({
   listings,
   center = [5.6515, -0.187],
   zoom = 13,
-  onMarkerClick,
   height = "400px",
 }: MapViewProps) {
+  const navigate = useNavigate();
   return (
     <div
       style={{ height, width: "100%" }}
@@ -81,21 +84,47 @@ export function MapView({
             key={listing.id}
             position={[listing.location.lat, listing.location.lng]}
             icon={listing.type === "hostel" ? hostelIcon : privateIcon}
-            eventHandlers={{
-              click: () => onMarkerClick?.(listing),
-            }}
           >
             <Popup>
-              <div className="p-2">
+              <div className="p-1">
                 <h4 className="text-sm mb-1">{listing.title}</h4>
-                <p className="text-xs text-muted-foreground">
-                  {listing.location.area}
-                </p>
-                {listing.price && (
-                  <p className="text-sm text-accent mt-1">
-                    GH₵ {listing.price}/month
+
+                <img
+                  src={listing.images[0]}
+                  alt={listing.title}
+                  className="h-[100px] w-[400px]"
+                />
+
+                <div className="flex items-center justify-between">
+                  <p className="text-xs text-muted-foreground flex items-center gap-1">
+                    <MapPin className="w-4 h-4" />
+                    {listing.location.area}
                   </p>
-                )}
+                  <StatusBadge status={listing.availability} size="sm" />
+                </div>
+
+                <div className="flex justify-between items-center">
+                  {listing.price ? (
+                    <span className="text-sm text-accent">
+                      GH₵ {listing.price}/month
+                    </span>
+                  ) : (
+                    <span>Price not available</span>
+                  )}
+
+                  <span
+                    onClick={() => {
+                      const path =
+                        listing.type === "hostel"
+                          ? `/hostel/${listing.id}`
+                          : `/rental/${listing.id}`;
+                      navigate(path);
+                    }}
+                    className="text-primary text-xs underline cursor-pointer"
+                  >
+                    View Details
+                  </span>
+                </div>
               </div>
             </Popup>
           </Marker>
