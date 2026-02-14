@@ -1,16 +1,23 @@
-import { useParams, useNavigate } from 'react-router';
-import { ArrowLeft, MapPin, Phone, Mail, Clock, ExternalLink } from 'lucide-react';
-import { mockListings } from '../data/mockData';
-import { StatusBadge } from '../components/StatusBadge';
-import { MapView } from '../components/MapView';
-import { BottomNavigation } from '../components/BottomNavigation';
-import { DesktopNavigation } from '../components/DesktopNavigation';
-import { formatDistanceToNow } from 'date-fns';
+import { useParams, useNavigate } from "react-router";
+import {
+  ArrowLeft,
+  MapPin,
+  Phone,
+  Mail,
+  Clock,
+  ExternalLink,
+} from "lucide-react";
+import { mockListings } from "../data/mockData";
+import { StatusBadge } from "../components/StatusBadge";
+import { MapView } from "../components/MapView";
+import { BottomNavigation } from "../components/BottomNavigation";
+import { DesktopNavigation } from "../components/DesktopNavigation";
+import { formatDistanceToNow } from "date-fns";
 
 export default function HostelDetailPage() {
   const { id } = useParams();
   const navigate = useNavigate();
-  const listing = mockListings.find((l) => l.id === id && l.type === 'hostel');
+  const listing = mockListings.find((l) => l.id === id && l.type === "hostel");
 
   if (!listing) {
     return (
@@ -18,7 +25,7 @@ export default function HostelDetailPage() {
         <div className="text-center">
           <h2 className="text-xl mb-2">Hostel not found</h2>
           <button
-            onClick={() => navigate('/')}
+            onClick={() => navigate("/")}
             className="text-accent hover:underline"
           >
             Return to home
@@ -31,7 +38,7 @@ export default function HostelDetailPage() {
   return (
     <div className="min-h-screen bg-background pb-20 md:pb-0">
       <DesktopNavigation />
-      
+
       {/* Image Header */}
       <div className="relative h-72 overflow-hidden">
         <img
@@ -54,7 +61,7 @@ export default function HostelDetailPage() {
             <h1 className="text-2xl">{listing.title}</h1>
             <StatusBadge status={listing.availability} />
           </div>
-          
+
           <div className="flex items-center gap-2 text-muted-foreground mb-2">
             <MapPin className="w-5 h-5" />
             <span>{listing.location.address}</span>
@@ -62,7 +69,10 @@ export default function HostelDetailPage() {
 
           <div className="flex items-center gap-2 text-sm text-muted-foreground">
             <Clock className="w-4 h-4" />
-            <span>Updated {formatDistanceToNow(listing.lastUpdated, { addSuffix: true })}</span>
+            <span>
+              Updated{" "}
+              {formatDistanceToNow(listing.lastUpdated, { addSuffix: true })}
+            </span>
           </div>
         </div>
 
@@ -85,13 +95,16 @@ export default function HostelDetailPage() {
                   <div>
                     <h4 className="mb-1">{room.type}</h4>
                     <p className="text-sm text-muted-foreground">
-                      Capacity: {room.capacity} {room.capacity === 1 ? 'person' : 'people'}
+                      Capacity: {room.capacity}{" "}
+                      {room.capacity === 1 ? "person" : "people"}
                     </p>
                   </div>
                   <div className="text-right">
                     <div className="text-lg text-accent mb-1">
                       GH₵ {room.price}
-                      <span className="text-sm text-muted-foreground">/month</span>
+                      <span className="text-sm text-muted-foreground">
+                        /month
+                      </span>
                     </div>
                     <StatusBadge status={room.availability} size="sm" />
                   </div>

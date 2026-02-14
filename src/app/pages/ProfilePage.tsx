@@ -43,7 +43,10 @@ export default function ProfilePage() {
                 </p>
               </div>
             </div>
-            <button className="px-3 py-1 bg-white/10 hover:bg-red-500 rounded-full transition-colors flex items-center gap-1">
+            <button
+              onClick={() => navigate("/auth")}
+              className="px-3 py-1 bg-white/10 hover:bg-red-500 rounded-full transition-colors flex items-center gap-1"
+            >
               <LogOut className="w-5 h-5" /> Logout
             </button>
           </div>
