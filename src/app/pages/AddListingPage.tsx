@@ -16,13 +16,6 @@ export default function AddListingPage() {
     setStep("form");
   };
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    // In a real app, this would submit to a backend
-    alert("Listing submitted successfully! (Demo mode)");
-    navigate("/profile");
-  };
-
   if (step === "select-type") {
     return (
       <div className="min-h-screen bg-background pb-20 md:pb-0">
@@ -95,10 +88,7 @@ export default function AddListingPage() {
         </div>
       </header>
 
-      <CreateListingForm
-        handleSubmit={handleSubmit}
-        providerType={providerType}
-      />
+      <CreateListingForm providerType={providerType} />
 
       <BottomNavigation />
     </div>
