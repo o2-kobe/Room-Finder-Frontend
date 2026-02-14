@@ -1,4 +1,10 @@
-@import './fonts.css';
-@import './tailwind.css';
-@import './theme.css';
-@import 'leaflet/dist/leaflet.css';
+@import "./fonts.css";
+@import "./tailwind.css";
+@import "./theme.css";
+@import "leaflet/dist/leaflet.css";
+
+@layer components {
+  .filter-option {
+    @apply block text-sm w-full text-left px-4 py-2 hover:bg-muted;
+  }
+}

@@ -109,7 +109,7 @@ export function MapView({
                       GH₵ {listing.price}/month
                     </span>
                   ) : (
-                    <span>Price not available</span>
+                    <span className="text-gray-500">Price not available</span>
                   )}
 
                   <span
