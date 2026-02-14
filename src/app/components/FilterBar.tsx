@@ -1,6 +1,7 @@
-import { Search, SlidersHorizontal } from "lucide-react";
+import { Search } from "lucide-react";
 import { CategoryToggle } from "./CategoryToggle";
 import { type FilterState } from "../types";
+import FilterButton from "./FilterButton";
 
 interface FilterBarProps {
   filters: FilterState;
@@ -9,7 +10,7 @@ interface FilterBarProps {
 
 export function FilterBar({ filters, onFiltersChange }: FilterBarProps) {
   return (
-    <div className="bg-white border-b border-border sticky top-0 z-40">
+    <div className="bg-white border-b border-border sticky top-0 z-40 ">
       <div className="max-w-screen-xl mx-auto px-4 py-3 space-y-3">
         <div className="relative">
           <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-muted-foreground" />
@@ -30,10 +31,7 @@ export function FilterBar({ filters, onFiltersChange }: FilterBarProps) {
             onChange={(category) => onFiltersChange({ ...filters, category })}
           />
 
-          <button className="flex items-center gap-2 px-4 py-2 rounded-2xl border border-border bg-white hover:bg-muted transition-colors whitespace-nowrap">
-            <SlidersHorizontal className="w-4 h-4" />
-            <span>Filters</span>
-          </button>
+          <FilterButton />
         </div>
       </div>
     </div>
