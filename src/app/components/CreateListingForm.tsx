@@ -288,7 +288,7 @@ export default function CreateListingForm({
             ) : (
               <div>
                 <p className="text-sm text-muted-foreground mb-1">
-                  Click to upload or drag and drop
+                  Click to upload
                 </p>
                 <p className="text-xs text-muted-foreground">
                   Multiple PNG, JPG files up to 10MB each

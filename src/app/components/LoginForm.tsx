@@ -1,8 +1,10 @@
-import { Home } from "lucide-react";
+import { Eye, EyeOff, Home } from "lucide-react";
 import { useState } from "react";
 
 const LoginForm = () => {
-  const [isSignup, setIsSignup] = useState(true);
+  const [isSignup, setIsSignup] = useState(false);
+  const [viewPassword, setViewPassword] = useState(false);
+  const [viewPasswordConfirm, setViewPasswordConfirm] = useState(false);
 
   return (
     <div className="flex items-center justify-center min-h-screen p-5 bg-gray-50">
@@ -22,7 +24,7 @@ const LoginForm = () => {
             onClick={() => setIsSignup(true)}
             className={`${isSignup ? "bg-primary text-white" : ""} border border-gray-300 p-2`}
           >
-            SIGNUP
+            SIGN UP
           </button>
         </div>
 
@@ -67,19 +69,44 @@ const LoginForm = () => {
             </div>
           ) : null}
 
-          <div className="bg-gray-100 rounded-md w-full border border-gray-200">
+          <div className="bg-gray-100 rounded-md w-full border border-gray-200 flex items-center justify-between">
             <input
-              type="password"
+              type={viewPasswordConfirm ? "text" : "password"}
               id="password"
               name="password"
               required
               placeholder="Enter password"
               className="p-3 text-sm outline-none bg-transparent w-full"
             />
+            <span
+              className="mr-2 text-gray-600"
+              onClick={() => setViewPasswordConfirm((view) => !view)}
+            >
+              {viewPasswordConfirm ? <Eye size={20} /> : <EyeOff size={20} />}
+            </span>
           </div>
 
+          {isSignup ? (
+            <div className="bg-gray-100 rounded-md w-full border border-gray-200 flex items-center justify-between">
+              <input
+                type={viewPassword ? "text" : "password"}
+                id="passwordConfirm"
+                name="password"
+                required
+                placeholder="Confirm Password"
+                className="p-3 text-sm outline-none bg-transparent w-full"
+              />
+              <span
+                className="mr-2 text-gray-600"
+                onClick={() => setViewPassword((view) => !view)}
+              >
+                {viewPassword ? <Eye size={20} /> : <EyeOff size={20} />}
+              </span>
+            </div>
+          ) : null}
+
           <button className="bg-primary hover:bg-violet- cursor-pointer text-white p-2 rounded-md w-full text-center">
-            {isSignup ? "SIGN UP" : "LOG IN"}
+            {isSignup ? "SIGN UP" : "LOGIN"}
           </button>
         </form>
       </div>
