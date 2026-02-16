@@ -1,9 +1,9 @@
-import LoginForm from "../components/LoginForm";
+import LoginForm from "../components/AuthForm";
 
 const AuthForm = () => {
   return (
     <div>
-      <LoginForm />
+      <LoginForm type="signup" />
     </div>
   );
 };

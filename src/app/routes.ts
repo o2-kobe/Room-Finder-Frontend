@@ -6,7 +6,8 @@ import HostelDetailPage from "./pages/HostelDetailPage";
 import RentalDetailPage from "./pages/RentalDetailPage";
 import AddListingPage from "./pages/AddListingPage";
 import ProfilePage from "./pages/ProfilePage";
-import AuthForm from "./pages/AuthForm";
+import Login from "./pages/Login";
+import Signup from "./pages/Signup";
 
 export const router = createBrowserRouter([
   {
@@ -38,7 +39,11 @@ export const router = createBrowserRouter([
     Component: ProfilePage,
   },
   {
-    path: "/auth",
-    Component: AuthForm,
+    path: "/login",
+    Component: Login,
+  },
+  {
+    path: "/signup",
+    Component: Signup,
   },
 ]);
