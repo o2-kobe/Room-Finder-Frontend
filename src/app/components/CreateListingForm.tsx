@@ -4,6 +4,7 @@ import { useRef, useState } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { listingSchema, type ListingFormData } from "../schema/listing.schema";
 import Input from "./FormInput";
+import RoomType from "./RoomType";
 
 interface CreateListingFormProps {
   providerType: string | null;
@@ -164,7 +165,7 @@ export default function CreateListingForm({
         {providerType === "private" && (
           <Input
             isSubmitting={isSubmitting}
-            label="Monthly rent"
+            label="Monthly rent &#40;Gh&#8353;&#41;"
             type="text"
             placeholder="1000"
             error={errors.monthlyRent}
@@ -173,18 +174,33 @@ export default function CreateListingForm({
         )}
 
         {/* Room Types (for hostels) */}
+        {providerType === "hostel" && <RoomType />}
+
+        {/* Price Range*/}
         {providerType === "hostel" && (
-          <div className="bg-white rounded-2xl p-6 shadow-sm">
-            <h3 className="text-lg mb-4">Room Types</h3>
-            <p className="text-sm text-muted-foreground mb-4">
-              Add different room types available in your hostel
-            </p>
-            <button
-              type="button"
-              className="w-full py-3 border-2 border-dashed border-border rounded-xl hover:border-primary hover:bg-muted/50 transition-colors text-muted-foreground"
-            >
-              + Add Room Type
-            </button>
+          <div className="bg-white rounded-2xl p-6 shadow-sm space-y-4">
+            <h4>Price Range *</h4>
+            <div className="flex justify-around items-center">
+              <div>
+                <label htmlFor="">Minimum Price &#40;Gh&#8353;&#41;</label>
+                <br />
+                <input
+                  placeholder="1000"
+                  className="no-spin px-4 py-3 rounded-xl bg-input-background border focus:border-primary focus:outline-none"
+                  type="number"
+                />
+              </div>
+
+              <div>
+                <label htmlFor="">Maximum Price &#40;Gh&#8353;&#41;</label>
+                <br />
+                <input
+                  placeholder="5000"
+                  className="no-spin px-4 py-3 rounded-xl bg-input-background border focus:border-primary focus:outline-none"
+                  type="number"
+                />
+              </div>
+            </div>
           </div>
         )}
 
