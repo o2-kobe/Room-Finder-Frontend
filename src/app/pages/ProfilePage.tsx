@@ -44,7 +44,7 @@ export default function ProfilePage() {
               </div>
             </div>
             <button
-              onClick={() => navigate("/auth")}
+              onClick={() => navigate("/login")}
               className="px-3 py-1 bg-white/10 hover:bg-red-500 rounded-full transition-colors flex items-center gap-1"
             >
               <LogOut className="w-5 h-5" /> Logout
