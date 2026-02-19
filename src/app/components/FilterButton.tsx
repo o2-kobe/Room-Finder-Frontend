@@ -1,4 +1,4 @@
-import { SlidersHorizontal } from "lucide-react";
+import { CircleDot, SlidersHorizontal } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 
 const FilterButton = () => {
@@ -31,19 +31,24 @@ const FilterButton = () => {
         className="flex items-center gap-2 px-4 py-2 rounded-2xl border border-border bg-white hover:bg-muted transition-colors whitespace-nowrap"
       >
         <SlidersHorizontal className="w-4 h-4" />
-        <span>Filter price by</span>
+        <span className="text-xs md:inline-block md:text-base">Filters</span>
       </button>
 
       <div
-        className={`${isOpen ? "" : "hidden"} absolute top-full mt-2  bg-white border border-border rounded-lg shadow-lg ml-3`}
+        className={`${isOpen ? "" : "hidden"} absolute top-full overflow-hidden right-0 w-30 md:w-40 mt-2 bg-white border border-border rounded-lg shadow-xl ml-3`}
       >
-        <button className="block text-sm w-full text-left px-4 py-2 hover:bg-muted">
-          &lt; less than 500
+        <button className="filter-option flex items-center gap-2">
+          <CircleDot size={13} color="green" /> Available
         </button>
-        <button className="filter-option">&lt; less than 1000</button>
-        <button className="filter-option">&lt; less than 2000</button>
-        <button className="filter-option">&lt; less than 3000</button>
-        <button className="filter-option">&gt; above 3000</button>
+        <button className="filter-option flex items-center gap-2">
+          <CircleDot size={13} color="gray" /> Inactive
+        </button>
+        <button className="filter-option">&lt; less than &#8353; 500</button>
+        <button className="filter-option">&lt; less than &#8353; 500</button>
+        <button className="filter-option">&lt; less than &#8353; 1000</button>
+        <button className="filter-option">&lt; less than &#8353; 2000</button>
+        <button className="filter-option">&lt; less than &#8353; 3000</button>
+        <button className="filter-option">&gt; above &#8353; 3000</button>
       </div>
     </div>
   );
