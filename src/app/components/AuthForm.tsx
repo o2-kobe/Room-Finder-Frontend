@@ -94,7 +94,7 @@ const LoginForm = ({ type }: { type: "login" | "signup" }) => {
                 <option value="">Select role</option>
                 <option value="landlord">Landlord</option>
                 <option value="hostelManager">Hostel Manager</option>
-                <option value="guest">Guest</option>
+                <option value="student">Student</option>
               </select>
               {errors?.role && (
                 <p className="text-red-500 text-sm mt-1">
