@@ -1,15 +1,13 @@
 import { useState } from "react";
-import { useNavigate } from "react-router";
-import { ArrowLeft, List } from "lucide-react";
 import { mockListings } from "../data/mockData";
 import { MapView } from "../components/MapView";
 import { BottomNavigation } from "../components/BottomNavigation";
 import { DesktopNavigation } from "../components/DesktopNavigation";
 import { type FilterState } from "../types";
 import { FilterBar } from "../components/FilterBar";
+import MobileHeader from "../components/MobileHeader";
 
 export default function MapPage() {
-  const navigate = useNavigate();
   const [filters, setFilters] = useState<FilterState>({
     category: "all",
     availability: "all",
@@ -39,24 +37,7 @@ export default function MapPage() {
       <DesktopNavigation />
 
       {/* Header */}
-      <header className="bg-white border-b border-border px-4 py-4 flex-shrink-0 md:hidden">
-        <div className="max-w-screen-xl mx-auto flex items-center gap-3">
-          <button
-            onClick={() => navigate("/")}
-            className="p-2 hover:bg-muted rounded-full transition-colors"
-          >
-            <ArrowLeft className="w-5 h-5" />
-          </button>
-          <h1 className="text-xl">Map View</h1>
-          <button
-            onClick={() => navigate("/explore")}
-            className="ml-auto flex items-center gap-2 px-4 py-2 rounded-2xl border border-border hover:bg-muted transition-colors"
-          >
-            <List className="w-4 h-4" />
-            <span className="hidden sm:inline">List View</span>
-          </button>
-        </div>
-      </header>
+      <MobileHeader heading="Map View" />
 
       <FilterBar filters={filters} onFiltersChange={setFilters} />
 

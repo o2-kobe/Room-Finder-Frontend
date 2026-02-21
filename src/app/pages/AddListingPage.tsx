@@ -1,13 +1,12 @@
 import { useState } from "react";
-import { useNavigate } from "react-router";
-import { ArrowLeft, Building2, Home } from "lucide-react";
+import { Building2, Home } from "lucide-react";
 import { BottomNavigation } from "../components/BottomNavigation";
 import { DesktopNavigation } from "../components/DesktopNavigation";
 import { type ListingType } from "../types";
 import CreateListingForm from "../components/CreateListingForm";
+import MobileHeader from "../components/MobileHeader";
 
 export default function AddListingPage() {
-  const navigate = useNavigate();
   const [step, setStep] = useState<"select-type" | "form">("select-type");
   const [providerType, setProviderType] = useState<ListingType | null>(null);
 
@@ -21,17 +20,7 @@ export default function AddListingPage() {
       <div className="min-h-screen bg-background pb-20 md:pb-0">
         <DesktopNavigation />
 
-        <header className="bg-white border-b border-border px-4 py-4">
-          <div className="max-w-screen-xl mx-auto flex items-center gap-3">
-            <button
-              onClick={() => navigate("/")}
-              className="p-2 hover:bg-muted rounded-full transition-colors"
-            >
-              <ArrowLeft className="w-5 h-5" />
-            </button>
-            <h1 className="text-xl">Add New Listing</h1>
-          </div>
-        </header>
+        <MobileHeader heading="Add New Listing" />
 
         <div className="max-w-2xl mx-auto px-4 py-12">
           <h2 className="text-2xl text-center mb-2">Choose Provider Type</h2>
@@ -74,19 +63,9 @@ export default function AddListingPage() {
     <div className="min-h-screen bg-background pb-20 md:pb-0">
       <DesktopNavigation />
 
-      <header className="bg-white border-b border-border px-4 py-4">
-        <div className="max-w-screen-xl mx-auto flex items-center gap-3">
-          <button
-            onClick={() => setStep("select-type")}
-            className="p-2 hover:bg-muted rounded-full transition-colors"
-          >
-            <ArrowLeft className="w-5 h-5" />
-          </button>
-          <h1 className="text-xl">
-            Add {providerType === "hostel" ? "Hostel" : "Private Rental"}
-          </h1>
-        </div>
-      </header>
+      <MobileHeader
+        heading={`Add ${providerType === "hostel" ? "Hostel" : "Private Rental"}`}
+      />
 
       <CreateListingForm providerType={providerType} />
 

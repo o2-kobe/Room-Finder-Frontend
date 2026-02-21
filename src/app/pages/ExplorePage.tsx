@@ -1,12 +1,13 @@
 import { useState } from "react";
 import { useNavigate } from "react-router";
-import { ArrowLeft, MapIcon } from "lucide-react";
+import { MapIcon } from "lucide-react";
 import { mockListings } from "../data/mockData";
 import { ListingCard } from "../components/ListingCard";
 import { FilterBar } from "../components/FilterBar";
 import { BottomNavigation } from "../components/BottomNavigation";
 import { DesktopNavigation } from "../components/DesktopNavigation";
 import { type FilterState } from "../types";
+import MobileHeader from "../components/MobileHeader";
 
 export default function ExplorePage() {
   const navigate = useNavigate();
@@ -39,22 +40,13 @@ export default function ExplorePage() {
       <DesktopNavigation />
 
       {/* Header */}
-      <header className="bg-white border-b border-border px-4 py-4">
-        <div className="max-w-screen-xl mx-auto flex items-center gap-3">
-          <button
-            onClick={() => navigate("/")}
-            className="p-2 hover:bg-muted rounded-full transition-colors md:hidden"
-          >
-            <ArrowLeft className="w-5 h-5" />
-          </button>
-          <h1 className="text-xl">Explore Listings</h1>
-          <div className="ml-auto">
-            <span className="text-sm text-muted-foreground">
-              {filteredListings.length} listings
-            </span>
-          </div>
+      <MobileHeader heading="Explore Listings">
+        <div className="ml-auto">
+          <span className="text-sm text-muted-foreground">
+            {filteredListings.length} listings
+          </span>
         </div>
-      </header>
+      </MobileHeader>
 
       <FilterBar filters={filters} onFiltersChange={setFilters} />
 
