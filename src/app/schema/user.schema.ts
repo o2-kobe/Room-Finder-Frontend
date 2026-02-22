@@ -1,15 +1,15 @@
 import { z } from "zod";
 
-export const userSchema = z
+export const signupSchema = z
   .object({
     username: z.string().min(3, "Username must be at least 5 characters"),
-    email: z.string().email("Email must be a valid format").or(z.literal("")),
+    email: z.string().email("Email must be a valid format"),
     password: z
       .string()
-      .min(6, "Password must be at least 6 characters")
-      .max(64, "Password cannot exceed 64 characters"),
+      .min(12, "Password must be at least 12 characters")
+      .max(72, "Password cannot exceed 72 characters"),
     passwordConfirm: z.string(),
-    role: z.enum(["landlord", "hostelManager", "Guest"], {
+    role: z.enum(["landlord", "hostelManager", "student"], {
       message: "Please select a valid role",
     }),
   })
@@ -18,4 +18,13 @@ export const userSchema = z
     path: ["passwordConfirm"],
   });
 
-export type UserFormData = z.infer<typeof userSchema>;
+export const loginSchema = z.object({
+  email: z.string().email("Email must be a valid format"),
+  password: z
+    .string()
+    .min(12, "Password must be at least 12 characters")
+    .max(72, "Password cannot exceed 72 characters"),
+});
+
+export type SignupFormData = z.infer<typeof signupSchema>;
+export type LoginFormData = z.infer<typeof loginSchema>;

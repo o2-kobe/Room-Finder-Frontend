@@ -1,33 +1,71 @@
 import { Eye, EyeOff, Home } from "lucide-react";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
-import { userSchema, type UserFormData } from "../schema/user.schema";
+import {
+  signupSchema,
+  loginSchema,
+  type SignupFormData,
+  type LoginFormData,
+} from "../schema/user.schema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useNavigate } from "react-router";
 
-const LoginForm = ({ type }: { type: "login" | "signup" }) => {
+const LoginForm = ({
+  type,
+  submitFn,
+}: {
+  type: "login" | "signup";
+  submitFn: (data: any) => Promise<void>;
+}) => {
   const navigate = useNavigate();
   const [viewPassword, setViewPassword] = useState(false);
   const [viewPasswordConfirm, setViewPasswordConfirm] = useState(false);
+
+  // choose schema and defaults based on current form type
+  const isLogin = type === "login";
+  const resolver = zodResolver(isLogin ? loginSchema : signupSchema);
+
+  type FormData = LoginFormData | SignupFormData;
+
+  const defaultValues: Partial<FormData> = isLogin
+    ? { email: "", password: undefined }
+    : {
+        username: "",
+        email: "",
+        password: undefined,
+        passwordConfirm: undefined,
+        role: undefined, // undefined matches signup type
+      };
 
   const {
     register,
     handleSubmit,
     formState: { errors, isSubmitting },
-  } = useForm<UserFormData>({
-    resolver: zodResolver(userSchema),
-    defaultValues: {
-      username: "",
-      email: "",
-      password: undefined,
-      passwordConfirm: undefined,
-      role: undefined,
-    },
+  } = useForm<FormData>({
+    resolver,
+    defaultValues,
   });
 
-  const onSubmit = (data: UserFormData) => {
-    console.log(data);
+  const onSubmit = async (data: FormData) => {
+    try {
+      if (isLogin) {
+        const { email, password } = data as LoginFormData;
+        await submitFn({ email, password });
+      } else {
+        await submitFn(data as SignupFormData);
+        console.log("signup success");
+      }
+
+      // navigation should happen only after the mutation resolves
+      navigate("/profile");
+    } catch (err) {
+      console.error("submitFn failed", err);
+      // you could call setError or show a toast here if you want to surface the error
+    }
   };
+
+  // because errors type is a union we cast when rendering signup-only fields
+  const signupErrors = errors as any;
 
   return (
     <div className="flex items-center justify-center min-h-screen p-5 bg-gray-50">
@@ -43,7 +81,9 @@ const LoginForm = ({ type }: { type: "login" | "signup" }) => {
         </p>
 
         <form
-          onSubmit={handleSubmit(onSubmit)}
+          onSubmit={handleSubmit(onSubmit, (errors) => {
+            console.log("validation errors", errors);
+          })}
           className="flex flex-col gap-3 items-center w-full mx-auto"
         >
           {type === "signup" ? (
@@ -57,9 +97,9 @@ const LoginForm = ({ type }: { type: "login" | "signup" }) => {
                 disabled={isSubmitting}
                 className="p-3 text-sm outline-none bg-transparent w-full"
               />
-              {errors?.username && (
+              {signupErrors?.username && (
                 <p className="text-red-500 text-sm mt-1">
-                  {errors.username.message}
+                  {signupErrors.username.message}
                 </p>
               )}
             </div>
@@ -96,9 +136,9 @@ const LoginForm = ({ type }: { type: "login" | "signup" }) => {
                 <option value="hostelManager">Hostel Manager</option>
                 <option value="student">Student</option>
               </select>
-              {errors?.role && (
+              {signupErrors?.role && (
                 <p className="text-red-500 text-sm mt-1">
-                  {errors.role.message}
+                  {signupErrors.role.message}
                 </p>
               )}
             </div>
@@ -152,9 +192,9 @@ const LoginForm = ({ type }: { type: "login" | "signup" }) => {
                   )}
                 </span>
               </div>
-              {errors?.passwordConfirm && (
+              {signupErrors?.passwordConfirm && (
                 <p className="text-red-500 text-sm mt-1">
-                  {errors.passwordConfirm.message}
+                  {signupErrors.passwordConfirm.message}
                 </p>
               )}
             </div>
@@ -182,8 +222,16 @@ const LoginForm = ({ type }: { type: "login" | "signup" }) => {
             </p>
           )}
 
-          <button className="bg-primary hover:bg-violet- cursor-pointer text-white p-2 rounded-md w-full text-center">
-            {type === "signup" ? "SIGN UP" : "LOGIN"}
+          <button
+            type="submit"
+            onClick={() => console.log("button clicked")}
+            className="bg-primary hover:bg-violet- cursor-pointer text-white p-2 rounded-md w-full text-center"
+          >
+            {isSubmitting
+              ? "Submitting..."
+              : type === "signup"
+                ? "SIGN UP"
+                : "LOGIN"}
           </button>
         </form>
       </div>

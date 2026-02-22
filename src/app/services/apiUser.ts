@@ -1,10 +1,11 @@
 import api from "./axiosInstance";
 
 export interface CreateUserInput {
-  name: string;
+  username: string;
   email: string;
   password: string;
   passwordConfirm: string;
+  role?: "hostelManager" | "student" | "landlord";
 }
 
 export interface LoginInput {
@@ -26,15 +27,7 @@ export async function signoutUser() {
   return data;
 }
 
-export async function getUser() {
-  const { data } = await api.get("/users/me");
+export async function getCurrentUser() {
+  const { data } = await api.get("/users");
   return data;
 }
-
-/**
- * const { data: user, isLoading } = useQuery({
-  queryKey: ["user"],
-  queryFn: getUser,
-});
-
- */
