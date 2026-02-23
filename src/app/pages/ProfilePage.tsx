@@ -7,10 +7,9 @@ import { useAuth } from "../hooks/useAuth";
 
 export default function ProfilePage() {
   const navigate = useNavigate();
-  // const [activeTab, setActiveTab] = useState<"active" | "inactive">("active");
+  const { user, isAuthenticated, isLoading } = useAuth();
 
-  const { isAuthenticated, isLoading, logout } = useAuth();
-
+  // redirect to login if not authenticated (after loading completes)
   useEffect(() => {
     if (!isLoading && !isAuthenticated) {
       navigate("/login");
@@ -37,15 +36,15 @@ export default function ProfilePage() {
                 <User className="w-8 h-8" />
               </div>
               <div>
-                <h1 className="text-xl">Kwame Mensah</h1>
-                <p className="text-sm text-primary-foreground/80">
-                  Property Manager
+                <h1 className="text-xl">{user?.username || "User"}</h1>
+                <p className="text-sm text-primary font-bold rounded-md mt-1 bg-gray-300 w-fit p-1">
+                  {user?.role?.toUpperCase() || "Member"}
                 </p>
               </div>
             </div>
             <button
               onClick={() => {
-                logout();
+                // logout();
                 navigate("/");
               }}
               className="px-3 py-1 bg-white/10 hover:bg-red-500 rounded-full transition-colors flex items-center gap-1"
