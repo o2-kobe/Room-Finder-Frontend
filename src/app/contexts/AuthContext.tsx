@@ -1,7 +1,7 @@
 import { createContext, type ReactNode } from "react";
 import { useCurrentUser } from "../hooks/useAuth";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { loginUser, signoutUser } from "../services/apiUser";
+import { loginUser, signoutUser, getCurrentUser } from "../services/apiUser";
 
 type AuthContextType = {
   user: any | null;
@@ -22,8 +22,18 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
   const loginMutation = useMutation({
     mutationFn: loginUser,
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["currentUser"] });
+    onSuccess: async () => {
+      // after successful login, immediately fetch the user data
+      // (the backend has set the httpOnly cookie), and cache it.
+      // do NOT store the accessToken in localStorage.
+      try {
+        const userData = await getCurrentUser();
+        queryClient.setQueryData(["currentUser"], userData);
+      } catch (err) {
+        // if the fetch fails, the login was likely incomplete
+        console.error("Failed to fetch user after login", err);
+        throw err;
+      }
     },
   });
 
