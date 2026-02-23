@@ -5,7 +5,7 @@ export interface CreateUserInput {
   email: string;
   password: string;
   passwordConfirm: string;
-  role?: "hostelManager" | "student" | "landlord";
+  role: "hostelManager" | "student" | "landlord";
 }
 
 export interface LoginInput {
