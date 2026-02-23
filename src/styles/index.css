@@ -3,8 +3,18 @@
 @import "./theme.css";
 @import "leaflet/dist/leaflet.css";
 
+.no-spin::-webkit-inner-spin-button,
+.no-spin::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+.no-spin {
+  -moz-appearance: textfield;
+}
+
 @layer components {
   .filter-option {
-    @apply block text-sm w-full text-left px-4 py-2 hover:bg-muted;
+    @apply block text-xs md:text-sm w-full text-left px-2 md:px-4 py-2 hover:bg-muted;
   }
 }
