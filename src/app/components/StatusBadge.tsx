@@ -1,4 +1,4 @@
-import { type AvailabilityStatus } from "../types";
+type AvailabilityStatus = "available" | "inactive";
 
 interface StatusBadgeProps {
   status: AvailabilityStatus;
@@ -11,13 +11,9 @@ export function StatusBadge({ status, size = "md" }: StatusBadgeProps) {
       label: "Available",
       color: "bg-green-700 text-white",
     },
-    "recently-updated": {
-      label: "Recently Updated",
-      color: "bg-[#f59e0b] text-white",
-    },
     inactive: {
       label: "Inactive",
-      color: "bg-[#9ca3af] text-white",
+      color: "bg-[#6e737b] text-white",
     },
   };
 
@@ -28,7 +24,7 @@ export function StatusBadge({ status, size = "md" }: StatusBadgeProps) {
   return (
     <p className=" bg-white rounded-full flex items-center p-0.5">
       <span
-        className={`inline-flex items-center rounded-full ${sizeClasses} ${config.color}`}
+        className={`inline-flex items-center rounded-full ${sizeClasses} ${statusConfig[status].color} `}
       >
         {config.label}
       </span>
