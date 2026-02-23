@@ -32,6 +32,7 @@ export interface Contact {
 
 // Listing Interface
 export interface ListingDocument {
+  id: string;
   title: string;
   description: string;
   listingType: "hostel" | "private";
@@ -39,7 +40,7 @@ export interface ListingDocument {
   amenities: string[];
   location: Location;
   pricing: Pricing;
-  roomTypes?: RoomTypes;
+  roomTypes?: RoomTypes[];
   availabilityStatus: "available" | "inactive";
   contact: Contact;
   createdBy: string;
