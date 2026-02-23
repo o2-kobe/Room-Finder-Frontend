@@ -8,6 +8,7 @@ import AddListingPage from "./pages/AddListingPage";
 import ProfilePage from "./pages/ProfilePage";
 import Login from "./pages/Login";
 import Signup from "./pages/Signup";
+import ListingDetailPage from "./pages/ListingDetailPage";
 
 export const router = createBrowserRouter([
   {
@@ -29,6 +30,10 @@ export const router = createBrowserRouter([
   {
     path: "/rental/:id",
     Component: RentalDetailPage,
+  },
+  {
+    path: "/explore/listing/:id",
+    Component: ListingDetailPage,
   },
   {
     path: "/add-listing",
