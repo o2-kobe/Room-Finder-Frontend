@@ -1,4 +1,4 @@
-import { Eye, EyeOff, Home } from "lucide-react";
+import { ArrowLeft, Eye, EyeOff, Home } from "lucide-react";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import {
@@ -224,8 +224,7 @@ const LoginForm = ({
 
           <button
             type="submit"
-            onClick={() => console.log("button clicked")}
-            className="bg-primary hover:bg-violet- cursor-pointer text-white p-2 rounded-md w-full text-center"
+            className="bg-primary hover:bg-blue-950 cursor-pointer text-white p-2 rounded-md w-full text-center"
           >
             {isSubmitting
               ? "Submitting..."
@@ -233,6 +232,13 @@ const LoginForm = ({
                 ? "SIGN UP"
                 : "LOGIN"}
           </button>
+          <p>or</p>
+          <p
+            onClick={() => navigate("/")}
+            className="text-xs text-blue-900 flex items-center gap-1 underline cursor-pointer hover:text-blue-700"
+          >
+            <ArrowLeft /> Go back to homepage
+          </p>
         </form>
       </div>
     </div>
