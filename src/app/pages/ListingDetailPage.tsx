@@ -9,6 +9,7 @@ import {
   MapPin,
   Navigation,
   Phone,
+  University,
 } from "lucide-react";
 import { formatDistanceToNow } from "date-fns";
 import { MapView } from "../components/MapView";
@@ -16,6 +17,7 @@ import { BottomNavigation } from "../components/BottomNavigation";
 import type { ListingDocument } from "../Types/listing";
 import { StatusBadge } from "../components/StatusBadge";
 import Loading from "../components/Loading";
+import RecentSpan from "../components/RecentlyUpdated";
 
 const ListingDetailPage = () => {
   const { id } = useParams();
@@ -41,12 +43,12 @@ const ListingDetailPage = () => {
     return (
       <div className="min-h-screen bg-background flex items-center justify-center">
         <div className="text-center">
-          <h2 className="text-xl mb-2">Hostel not found</h2>
+          <h2 className="text-xl mb-2">Listing not found</h2>
           <button
-            onClick={() => navigate("/")}
+            onClick={() => navigate("/explore")}
             className="text-accent hover:underline"
           >
-            Return to home
+            Return to listings
           </button>
         </div>
       </div>
@@ -84,6 +86,11 @@ const ListingDetailPage = () => {
             <span>{listing.location?.area}</span>
           </div>
 
+          <div className="flex items-center gap-2 text-muted-foreground mb-2">
+            <University className="w-5 h-5" />
+            <span>{listing.location?.university}</span>
+          </div>
+
           {listing.listingType === "private" ? (
             <div className="text-2xl text-accent mb-2">
               GH₵ {listing.pricing.monthlyPrice}
@@ -102,12 +109,16 @@ const ListingDetailPage = () => {
             </div>
           )}
 
-          <div className="flex items-center gap-2 text-sm text-muted-foreground">
-            <Clock className="w-4 h-4" />
-            <span>
-              Updated{" "}
-              {formatDistanceToNow(listing.updatedAt, { addSuffix: true })}
-            </span>
+          {/*Updated Time */}
+          <div className="flex gap-1">
+            <div className="flex items-center gap-2 text-sm text-muted-foreground">
+              <Clock className="w-4 h-4" />
+              <span>
+                Updated{" "}
+                {formatDistanceToNow(listing.updatedAt, { addSuffix: true })}
+              </span>
+            </div>
+            <RecentSpan updateTime={listing.updatedAt} />
           </div>
         </div>
 
