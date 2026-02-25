@@ -1,36 +1,22 @@
 import { useState } from "react";
-import { mockListings } from "../data/mockData";
 import { MapView } from "../components/MapView";
 import { BottomNavigation } from "../components/BottomNavigation";
 import { DesktopNavigation } from "../components/DesktopNavigation";
-import { type FilterState } from "../types";
 import { FilterBar } from "../components/FilterBar";
 import MobileHeader from "../components/MobileHeader";
+import type { ListingFilters } from "../Types/listing";
+import { useMapListings } from "../hooks/useListings";
 
 export default function MapPage() {
-  const [filters, setFilters] = useState<FilterState>({
-    category: "all",
-    availability: "all",
-    searchQuery: "",
+  const [filters, setFilters] = useState<ListingFilters>({
+    listingType: undefined,
+    availabilityStatus: "available",
+    price: undefined,
+    search: "",
   });
 
-  const filteredListings = mockListings.filter((listing) => {
-    const matchesCategory =
-      filters.category === "all" || listing.type === filters.category;
-    const matchesAvailability =
-      filters.availability === "all" ||
-      listing.availability === filters.availability;
-    const matchesSearch =
-      filters.searchQuery === "" ||
-      listing.title.toLowerCase().includes(filters.searchQuery.toLowerCase()) ||
-      listing.location.area
-        .toLowerCase()
-        .includes(filters.searchQuery.toLowerCase()) ||
-      listing.location.university
-        .toLowerCase()
-        .includes(filters.searchQuery.toLowerCase());
-    return matchesCategory && matchesAvailability && matchesSearch;
-  });
+  const { data } = useMapListings(filters);
+  const listings = data?.data;
 
   return (
     <div className="h-screen flex flex-col bg-background">
@@ -43,7 +29,7 @@ export default function MapPage() {
 
       {/* Map Container */}
       <div className="flex-1 relative">
-        <MapView listings={filteredListings} height="100%" />
+        <MapView listings={listings ?? []} height="100%" />
       </div>
 
       <BottomNavigation />
