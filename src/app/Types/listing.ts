@@ -51,9 +51,9 @@ export interface ListingDocument {
 //Types used in API functions
 
 export interface ListingFilters {
-  listingType?: "hostel" | "private";
-  availabilityStatus?: "available" | "inactive";
-  price?: number;
+  listingType?: "hostel" | "private" | undefined;
+  availabilityStatus?: "available" | "inactive" | undefined;
+  price?: number | undefined;
   search?: string;
 }
 
