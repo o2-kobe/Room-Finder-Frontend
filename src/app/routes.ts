@@ -2,8 +2,6 @@ import { createBrowserRouter } from "react-router";
 import HomePage from "./pages/HomePage";
 import ExplorePage from "./pages/ExplorePage";
 import MapPage from "./pages/MapPage";
-import HostelDetailPage from "./pages/HostelDetailPage";
-import RentalDetailPage from "./pages/RentalDetailPage";
 import AddListingPage from "./pages/AddListingPage";
 import ProfilePage from "./pages/ProfilePage";
 import Login from "./pages/Login";
@@ -22,14 +20,6 @@ export const router = createBrowserRouter([
   {
     path: "/map",
     Component: MapPage,
-  },
-  {
-    path: "/hostel/:id",
-    Component: HostelDetailPage,
-  },
-  {
-    path: "/rental/:id",
-    Component: RentalDetailPage,
   },
   {
     path: "/explore/listing/:id",
