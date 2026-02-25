@@ -2,50 +2,24 @@
 import { useNavigate } from "react-router";
 import { Loader, MapIcon } from "lucide-react";
 import { ListingCard } from "../components/ListingCard";
-// import { FilterBar } from "../components/FilterBar";
+import { FilterBar } from "../components/FilterBar";
 import { BottomNavigation } from "../components/BottomNavigation";
 import { DesktopNavigation } from "../components/DesktopNavigation";
-// import { type FilterState } from "../types";
 import MobileHeader from "../components/MobileHeader";
 import { useListings } from "../hooks/useListings";
 import InfiniteScrollContainer from "../components/InfiniteScrollContainer";
 import Loading from "../components/Loading";
+import { useState } from "react";
+import type { ListingFilters } from "../Types/listing";
 
 export default function ExplorePage() {
   const navigate = useNavigate();
-  // const [filters, setFilters] = useState<FilterState>({
-  //   category: "all",
-  //   availability: "all",
-  //   searchQuery: "",
-  // });
-  const filters = {};
-
-  // const filteredListings = mockListings.filter((listing) => {
-  //   const matchesCategory =
-  //     filters.category === "all" || listing.type === filters.category;
-  //   const matchesAvailability =
-  //     filters.availability === "all" ||
-  //     listing.availability === filters.availability;
-  //   const matchesSearch =
-  //     filters.searchQuery === "" ||
-  //     listing.title.toLowerCase().includes(filters.searchQuery.toLowerCase()) ||
-  //     listing.location.area
-  //       .toLowerCase()
-  //       .includes(filters.searchQuery.toLowerCase()) ||
-  //     listing.location.university
-  //       .toLowerCase()
-  //       .includes(filters.searchQuery.toLowerCase());
-  //   return matchesCategory && matchesAvailability && matchesSearch;
-  // });
-
-  // const filters = useMemo(
-  //   () => ({
-  //     listingType: "hostel",
-  //     availabilityStatus: "available",
-  //     search: "",
-  //   }),
-  //   []
-  // );
+  const [filters, setFilters] = useState<ListingFilters>({
+    listingType: undefined,
+    availabilityStatus: undefined,
+    price: undefined,
+    search: "",
+  });
 
   const {
     data,
@@ -75,7 +49,11 @@ export default function ExplorePage() {
         </div>
       </MobileHeader>
 
-      {/* <FilterBar filters={filters} onFiltersChange={setFilters} /> */}
+      <FilterBar
+        showExtraFilters
+        filters={filters}
+        onFiltersChange={setFilters}
+      />
 
       {/* Listings Grid */}
       <InfiniteScrollContainer
