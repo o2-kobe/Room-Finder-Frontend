@@ -1,7 +1,8 @@
-import { MapPin, Clock, Building2, Home } from "lucide-react";
+import { MapPin, Clock, Building2, Home, University } from "lucide-react";
 import { StatusBadge } from "./StatusBadge";
 import { formatDistanceToNow } from "date-fns";
 import type { ListingDocument } from "../Types/listing";
+import UniversitySpan from "./UniversitySpan";
 
 interface ListingCardProps {
   listing: ListingDocument;
@@ -32,6 +33,10 @@ export function ListingCard({ listing, onClick }: ListingCardProps) {
           <div className="flex items-center gap-1 text-sm text-muted-foreground">
             <MapPin className="w-4 h-4" />
             <span className="line-clamp-1">{listing.location.area}</span>
+          </div>
+          <div className="flex items-center gap-1 text-sm text-muted-foreground">
+            <University className="w-4 h-4" />
+            <UniversitySpan name={listing.location.university} />
           </div>
 
           {listing.listingType === "private" && (
