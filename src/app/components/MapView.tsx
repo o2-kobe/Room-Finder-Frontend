@@ -1,16 +1,16 @@
 import { MapContainer, TileLayer, Marker, Popup, useMap } from "react-leaflet";
 import { Icon, type LatLngExpression } from "leaflet";
-import { type Listing } from "../types";
+import type { ListingDocument } from "../Types/listing";
 import { useEffect } from "react";
 import { StatusBadge } from "./StatusBadge";
 import { MapPin } from "lucide-react";
 import { useNavigate } from "react-router";
 
 interface MapViewProps {
-  listings: Listing[];
+  listings: ListingDocument[];
   center?: LatLngExpression;
   zoom?: number;
-  onMarkerClick?: (listing: Listing) => void;
+  onMarkerClick?: (listing: ListingDocument) => void;
   height?: string;
 }
 
@@ -55,6 +55,20 @@ function MapUpdater({
   return null;
 }
 
+function toLatLng(listing: ListingDocument): [number, number] {
+  // server stores GeoJSON coordinates as [lng, lat]
+  const coords = listing.location.coordinates?.coordinates;
+  if (
+    !coords ||
+    coords.length !== 2 ||
+    typeof coords[0] !== "number" ||
+    typeof coords[1] !== "number"
+  ) {
+    return [0, 0];
+  }
+  return [coords[1], coords[0]];
+}
+
 export function MapView({
   listings,
   center = [5.6515, -0.187],
@@ -79,56 +93,59 @@ export function MapView({
         />
         <MapUpdater center={center} zoom={zoom} />
 
-        {listings.map((listing) => (
-          <Marker
-            key={listing.id}
-            position={[listing.location.lat, listing.location.lng]}
-            icon={listing.type === "hostel" ? hostelIcon : privateIcon}
-          >
-            <Popup>
-              <div className="p-1">
-                <h4 className="text-sm mb-1">{listing.title}</h4>
+        {listings.map((listing) => {
+          const pos = toLatLng(listing);
+          if (pos[0] === 0 && pos[1] === 0) return null; // skip invalid
+          return (
+            <Marker
+              key={listing.id}
+              position={pos}
+              icon={listing.listingType === "hostel" ? hostelIcon : privateIcon}
+            >
+              <Popup>
+                <div className="p-1">
+                  <h4 className="text-sm mb-1">{listing.title}</h4>
 
-                <img
-                  src={listing.images[0]}
-                  alt={listing.title}
-                  className="h-[100px] w-[400px]"
-                />
+                  <img
+                    src="room.png"
+                    alt={listing.title}
+                    className="h-[100px] w-[400px]"
+                  />
 
-                <div className="flex items-center justify-between">
-                  <p className="text-xs text-muted-foreground flex items-center gap-1">
-                    <MapPin className="w-4 h-4" />
-                    {listing.location.area}
-                  </p>
-                  <StatusBadge status={listing.availability} size="sm" />
-                </div>
+                  <div className="flex items-center justify-between">
+                    <p className="text-xs text-muted-foreground flex items-center gap-1">
+                      <MapPin className="w-4 h-4" />
+                      {listing.location.area}
+                    </p>
+                    <StatusBadge
+                      status={listing.availabilityStatus}
+                      size="sm"
+                    />
+                  </div>
 
-                <div className="flex justify-between items-center">
-                  {listing.price ? (
-                    <span className="text-sm text-accent">
-                      GH₵ {listing.price}/month
+                  <div className="flex justify-between items-center">
+                    {listing.pricing ? (
+                      <span className="text-sm text-accent">
+                        GH₵ {listing.pricing.monthlyPrice || ""}/month
+                      </span>
+                    ) : (
+                      <span className="text-gray-500">Price not available</span>
+                    )}
+
+                    <span
+                      onClick={() => {
+                        navigate(`/explore/listing/${listing.id}`);
+                      }}
+                      className="text-primary text-xs underline cursor-pointer"
+                    >
+                      View Details
                     </span>
-                  ) : (
-                    <span className="text-gray-500">Price not available</span>
-                  )}
-
-                  <span
-                    onClick={() => {
-                      const path =
-                        listing.type === "hostel"
-                          ? `/hostel/${listing.id}`
-                          : `/rental/${listing.id}`;
-                      navigate(path);
-                    }}
-                    className="text-primary text-xs underline cursor-pointer"
-                  >
-                    View Details
-                  </span>
+                  </div>
                 </div>
-              </div>
-            </Popup>
-          </Marker>
-        ))}
+              </Popup>
+            </Marker>
+          );
+        })}
       </MapContainer>
     </div>
   );
