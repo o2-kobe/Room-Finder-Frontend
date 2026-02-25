@@ -1,37 +1,30 @@
 import { useState } from "react";
 import { useNavigate } from "react-router";
 import { Search, MapIcon } from "lucide-react";
-import { mockListings } from "../data/mockData";
 import { ListingCard } from "../components/ListingCard";
 import { CategoryToggle } from "../components/CategoryToggle";
 import { BottomNavigation } from "../components/BottomNavigation";
 import { DesktopNavigation } from "../components/DesktopNavigation";
 import { MapView } from "../components/MapView";
-import { type ListingType } from "../types";
+import { useListings } from "../hooks/useListings";
+import Loading from "../components/Loading";
+import type { ListingFilters } from "../Types/listing";
+import { RecentlyUpdated } from "../components/RecentlyUpdated";
 
 export default function HomePage() {
   const navigate = useNavigate();
-  const [category, setCategory] = useState<ListingType | "all">("all");
-  const [searchQuery, setSearchQuery] = useState("");
-
-  const filteredListings = mockListings.filter((listing) => {
-    const matchesCategory = category === "all" || listing.type === category;
-    const matchesSearch =
-      searchQuery === "" ||
-      listing.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      listing.location.area.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      listing.location.university
-        .toLowerCase()
-        .includes(searchQuery.toLowerCase());
-    return matchesCategory && matchesSearch;
+  const [filters, setFilters] = useState<ListingFilters>({
+    listingType: undefined,
+    availabilityStatus: "available",
+    search: "",
   });
 
-  const featuredListings = filteredListings.filter(
-    (listing) => listing.availability === "available",
-  );
-  const recentlyUpdated = filteredListings
-    .filter((listing) => listing.availability === "recently-updated")
-    .slice(0, 3);
+  const { data, isLoading, isError } = useListings(filters);
+
+  const listings = data?.pages.flatMap((page) => page.data) ?? [];
+
+  if (isLoading) return <Loading />;
+  if (isError) return <div>Something went wrong</div>;
 
   return (
     <div className="min-h-screen bg-background pb-20 md:pb-0">
@@ -46,8 +39,8 @@ export default function HomePage() {
             <input
               type="text"
               placeholder="Search by university or area..."
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
+              // value={searchQuery}
+              // onChange={(e) => setSearchQuery(e.target.value)}
               className="w-full pl-10 pr-4 py-3 rounded-2xl bg-white text-foreground focus:outline-none focus:ring-2 focus:ring-accent"
             />
           </div>
@@ -56,7 +49,10 @@ export default function HomePage() {
 
       {/* Category Toggle */}
       <div className="px-4 py-4 flex justify-center">
-        <CategoryToggle selected={category} onChange={setCategory} />
+        <CategoryToggle
+          selected={filters.listingType}
+          onChange={(listingType) => setFilters({ ...filters, listingType })}
+        />
       </div>
 
       <div className="max-w-screen-xl mx-auto px-4 space-y-8">
@@ -64,25 +60,18 @@ export default function HomePage() {
         <section>
           <h2 className="text-xl mb-4">Available Now</h2>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-            {featuredListings.slice(0, 6).map((listing) => (
-              <ListingCard key={listing.id} listing={listing} />
+            {listings.slice(0, 6).map((listing) => (
+              <ListingCard
+                key={listing.id}
+                listing={listing}
+                onClick={() => navigate(`/explore/listing/${listing.id}`)}
+              />
             ))}
           </div>
         </section>
 
         {/* Recently Updated */}
-        {recentlyUpdated.length > 0 && (
-          <section>
-            <h2 className="text-xl mb-4">Recently Updated</h2>
-            <div className="flex gap-4 overflow-x-auto pb-2 snap-x snap-mandatory">
-              {recentlyUpdated.map((listing) => (
-                <div key={listing.id} className="flex-shrink-0 w-80 snap-start">
-                  <ListingCard listing={listing} />
-                </div>
-              ))}
-            </div>
-          </section>
-        )}
+        <RecentlyUpdated listings={listings} />
 
         {/* Map Preview */}
         <section>
@@ -96,7 +85,7 @@ export default function HomePage() {
               <span>View Full Map</span>
             </button>
           </div>
-          <MapView listings={filteredListings} height="300px" />
+          <MapView listings={listings} height="300px" />
         </section>
 
         {/* All Listings Link */}
