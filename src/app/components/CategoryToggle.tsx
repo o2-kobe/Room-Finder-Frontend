@@ -1,13 +1,11 @@
-import { type ListingType } from "../types";
-
 interface CategoryToggleProps {
-  selected: ListingType | "all";
-  onChange: (category: ListingType | "all") => void;
+  selected: any | "all";
+  onChange: (category: any | "all") => void;
 }
 
 export function CategoryToggle({ selected, onChange }: CategoryToggleProps) {
-  const categories: { value: ListingType | "all"; label: string }[] = [
-    { value: "all", label: "All" },
+  const categories: { value: any | "all"; label: string }[] = [
+    { value: undefined, label: "All" },
     { value: "hostel", label: "Hostels" },
     { value: "private", label: "Private Rentals" },
   ];
@@ -19,7 +17,7 @@ export function CategoryToggle({ selected, onChange }: CategoryToggleProps) {
           key={category.value}
           onClick={() => onChange(category.value)}
           className={`
-            px-4 py-2 rounded-xl transition-all
+            px-2 py-1 md:px-4 md:py-2 rounded-xl transition-all text-sm md:text-base
             ${
               selected === category.value
                 ? "bg-primary text-primary-foreground shadow-sm"
