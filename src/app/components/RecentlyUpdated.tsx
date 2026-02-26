@@ -19,6 +19,7 @@ export const RecentlyUpdated = ({
   return (
     <section>
       <h2 className="text-xl mb-4">Recently Updated</h2>
+
       <div className="flex gap-4 overflow-x-auto pb-2 snap-x snap-mandatory">
         {recents.map((listing) => (
           <div key={listing.id} className="flex-shrink-0 w-80 snap-start">
@@ -26,6 +27,12 @@ export const RecentlyUpdated = ({
           </div>
         ))}
       </div>
+
+      {recents.length === 0 && (
+        <p className="text-center text-gray-500 my-3">
+          No Listings updated within the last 2 days
+        </p>
+      )}
     </section>
   );
 };
