@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router";
-import { Search, MapIcon } from "lucide-react";
+import { MapIcon } from "lucide-react";
 import { ListingCard } from "../components/ListingCard";
 import { CategoryToggle } from "../components/CategoryToggle";
 import { BottomNavigation } from "../components/BottomNavigation";
@@ -10,6 +10,7 @@ import { useListings } from "../hooks/useListings";
 import Loading from "../components/Loading";
 import type { ListingFilters } from "../Types/listing";
 import { RecentlyUpdated } from "../components/RecentlyUpdated";
+import HomepageHeader from "../components/HomepageHeader";
 
 export default function HomePage() {
   const navigate = useNavigate();
@@ -31,21 +32,7 @@ export default function HomePage() {
       <DesktopNavigation />
 
       {/* Header */}
-      <header className="bg-primary text-primary-foreground px-4 py-6">
-        <div className="max-w-screen-xl mx-auto">
-          <h1 className="text-2xl mb-4">Find Your Student Room</h1>
-          <div className="relative">
-            <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-muted-foreground" />
-            <input
-              type="text"
-              placeholder="Search by university or area..."
-              // value={searchQuery}
-              // onChange={(e) => setSearchQuery(e.target.value)}
-              className="w-full pl-10 pr-4 py-3 rounded-2xl bg-white text-foreground focus:outline-none focus:ring-2 focus:ring-accent"
-            />
-          </div>
-        </div>
-      </header>
+      <HomepageHeader filters={filters} onFiltersChange={setFilters} />
 
       {/* Category Toggle */}
       <div className="px-4 py-4 flex justify-center">
@@ -68,6 +55,11 @@ export default function HomePage() {
               />
             ))}
           </div>
+          {listings.length === 0 ? (
+            <p className="text-gray-500 text-center">
+              No listings found matching your filters.
+            </p>
+          ) : null}
         </section>
 
         {/* Recently Updated */}
