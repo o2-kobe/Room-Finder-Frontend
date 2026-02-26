@@ -21,7 +21,6 @@ const LoginForm = ({
   const [viewPassword, setViewPassword] = useState(false);
   const [viewPasswordConfirm, setViewPasswordConfirm] = useState(false);
 
-  // choose schema and defaults based on current form type
   const isLogin = type === "login";
   const resolver = zodResolver(isLogin ? loginSchema : signupSchema);
 
@@ -34,7 +33,7 @@ const LoginForm = ({
         email: "",
         password: undefined,
         passwordConfirm: undefined,
-        role: undefined, // undefined matches signup type
+        role: undefined,
       };
 
   const {
@@ -53,14 +52,10 @@ const LoginForm = ({
         await submitFn({ email, password });
       } else {
         await submitFn(data as SignupFormData);
-        console.log("signup success");
       }
-
-      // navigation should happen only after the mutation resolves
       navigate("/profile");
     } catch (err) {
       console.error("submitFn failed", err);
-      // you could call setError or show a toast here if you want to surface the error
     }
   };
 
