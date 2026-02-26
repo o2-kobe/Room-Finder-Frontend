@@ -1,21 +1,54 @@
 import { z } from "zod";
+const coordinatesSchema = z.object({
+  type: z.literal("Point"),
+  coordinates: z.array(z.number()).length(2, "Coordinates must be [lng, lat]"),
+});
+
+const locationSchema = z.object({
+  area: z.string().min(2),
+  university: z.string().min(10),
+  address: z.string().min(5).optional(),
+  coordinates: coordinatesSchema,
+});
+
+const pricingSchema = z.object({
+  monthlyPrice: z.number().positive().optional(),
+  priceRange: z
+    .object({
+      min: z.number().positive(),
+      max: z.number().positive(),
+    })
+    .optional(),
+});
+
+const contactSchema = z.object({
+  phone: z.string().regex(/^\d{10}$/, "Phone number must be exactly 10 digits"),
+  email: z.string().email().optional(),
+  website: z.string().url().optional(),
+});
 
 export const listingSchema = z.object({
-  title: z.string().min(5, "Title must be at least 5 characters"),
-  description: z.string().min(10, "Description must be at least 10 characters"),
-  university: z.string().min(1, "University name is required"),
-  area: z.string().min(3, "Area must be at least 3 characters"),
-  address: z.string().min(3, "Address must be at least 3 characters"),
-  monthlyRent: z.number().min(0, "Monthly rent cannot be negative").optional(), // keep as string for flexibility
-  availabilityStatus: z.enum(["available", "recently-updated", "inactive"], {
-    message: "Please select a valid availability status",
-  }),
-  contactName: z.string().min(5, "Contact name must be at least 5 characters"),
-  phoneNumber: z
-    .string()
-    .regex(/^\d{10}$/, "Phone number must be exactly 10 digits"),
-  email: z.string().email("Email must be a valid format").or(z.literal("")),
-  images: z.any().optional(),
+  title: z.string().min(10).max(100),
+  description: z.string().min(10).max(200),
+  listingType: z.enum(["hostel", "private"]),
+  images: z.array(z.string().url()).optional(),
+  amenities: z.array(z.string()).optional(),
+  location: locationSchema,
+  pricing: pricingSchema,
+  roomTypes: z
+    .array(
+      z.enum([
+        "1-in-a-room",
+        "2-in-a-room",
+        "3-in-a-room",
+        "4-in-a-room",
+        "More-than-4",
+        "Exclusive",
+      ]),
+    )
+    .optional(),
+  availabilityStatus: z.enum(["available", "inactive"]).default("available"),
+  contact: contactSchema,
 });
 
 export type ListingFormData = z.infer<typeof listingSchema>;
