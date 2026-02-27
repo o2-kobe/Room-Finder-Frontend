@@ -5,9 +5,17 @@ const coordinatesSchema = z.object({
 });
 
 const locationSchema = z.object({
-  area: z.string().min(2),
-  university: z.string().min(10),
-  address: z.string().min(5).optional(),
+  area: z
+    .string()
+    .min(2, "Area must be at least 2 characters")
+    .max(20, "Area must not exceed 20 characters"),
+  university: z
+    .string()
+    .min(10, "University name must be at least 10 characters"),
+  address: z
+    .string()
+    .min(5, "Address must be at least 5 characters")
+    .optional(),
   coordinates: coordinatesSchema,
 });
 
@@ -28,10 +36,19 @@ const contactSchema = z.object({
 });
 
 export const listingSchema = z.object({
-  title: z.string().min(10).max(100),
-  description: z.string().min(10).max(200),
+  title: z
+    .string()
+    .min(10, "Title must be at least 10 characters")
+    .max(100, "Title must not exceed 100 characters"),
+  description: z
+    .string()
+    .min(10, "Description must be at least 10 characters")
+    .max(200, "Description must not exceed 200 characters"),
   listingType: z.enum(["hostel", "private"]),
-  images: z.array(z.string().url()).optional(),
+  images: z
+    .array(z.instanceof(File))
+    .max(3, "You can upload a maximum of 3 images")
+    .optional(),
   amenities: z.array(z.string()).optional(),
   location: locationSchema,
   pricing: pricingSchema,
@@ -46,9 +63,10 @@ export const listingSchema = z.object({
         "Exclusive",
       ]),
     )
+    .min(1, "At least one room must be selected")
     .optional(),
   availabilityStatus: z.enum(["available", "inactive"]).default("available"),
   contact: contactSchema,
 });
 
-export type ListingFormData = z.infer<typeof listingSchema>;
+export type ListingFormData = z.input<typeof listingSchema>;
