@@ -1,10 +1,19 @@
-export default function RoomType() {
+import { type UseFormRegister } from "react-hook-form";
+import type { ListingFormData } from "../schema/listing.schema";
+
+interface RoomTypeProps {
+  register: UseFormRegister<ListingFormData>;
+  selected?: string[];
+}
+
+export default function RoomType({ register, selected = [] }: RoomTypeProps) {
   const ROOM_OPTIONS = [
-    { label: "Single (1 in a room)", value: "single" },
-    { label: "2 in a room", value: "two_in_room" },
-    { label: "3 in a room", value: "three_in_room" },
-    { label: "4 in a room", value: "four_in_room" },
-    { label: "Executive / Self-contained", value: "executive" },
+    { label: "Single (1 in a room)", value: "1-in-a-room" },
+    { label: "2 in a room", value: "2-in-a-room" },
+    { label: "3 in a room", value: "3-in-a-room" },
+    { label: "4 in a room", value: "4-in-a-room" },
+    { label: "More than 4 in a room", value: "More-than-4" },
+    { label: "Executive / Self-contained", value: "Exclusive" },
   ];
 
   return (
@@ -15,9 +24,15 @@ export default function RoomType() {
       </p>
 
       {ROOM_OPTIONS.map((room) => (
-        <div className="my-3 rounded-2xl p-3 shadow-sm">
-          <div className="space-x-1 mt-3">
-            <input type="checkbox" name={room.label} id={room.value} />
+        <div key={room.value} className="my-3 rounded-2xl p-3 shadow-sm">
+          <div className="space-x-2 mt-3">
+            <input
+              type="checkbox"
+              value={room.value}
+              id={room.value}
+              {...register("roomTypes")}
+              defaultChecked={selected.includes(room.value)}
+            />
             <label htmlFor={room.value}>{room.label}</label>
           </div>
         </div>
