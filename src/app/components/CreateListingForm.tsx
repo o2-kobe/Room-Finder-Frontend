@@ -1,60 +1,100 @@
-import { MapPin, Upload } from "lucide-react";
-import { useForm } from "react-hook-form";
-import { useRef, useState } from "react";
+import { ArrowLeft } from "lucide-react";
+import { useForm, type SubmitHandler } from "react-hook-form";
+import { useState } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { listingSchema, type ListingFormData } from "../schema/listing.schema";
 import Input from "./FormInput";
 import RoomType from "./RoomType";
+import api from "../services/axiosInstance";
+import ImageUpload from "./ImageUpload";
+// import { LocationSearch } from "./LocationSearch";
 
 interface CreateListingFormProps {
   providerType: string | null;
+  goBack: () => void;
 }
 
 export default function CreateListingForm({
   providerType,
+  goBack,
 }: CreateListingFormProps) {
-  const fileInputRef = useRef<HTMLInputElement>(null);
+  // const fileInputRef = useRef<HTMLInputElement>(null);
   const [selectedFiles, setSelectedFiles] = useState<File[]>([]);
+
   const {
     register,
     handleSubmit,
+    watch,
+    setValue,
     formState: { errors, isSubmitting },
   } = useForm<ListingFormData>({
     resolver: zodResolver(listingSchema),
     defaultValues: {
       title: "",
       description: "",
-      university: "",
-      area: "",
-      address: "",
-      monthlyRent: undefined,
-      availabilityStatus: undefined,
-      contactName: "",
-      phoneNumber: undefined,
-      email: "",
-      images: [""],
+      listingType: providerType === "hostel" ? "hostel" : "private",
+      images: [],
+      amenities: [],
+      location: {
+        area: "",
+        university: "",
+        address: "",
+        coordinates: {
+          type: "Point",
+          coordinates: [0, 0],
+        },
+      },
+      pricing: {
+        monthlyPrice: undefined,
+        priceRange: undefined,
+      },
+      roomTypes: [],
+      availabilityStatus: "available",
+      contact: {
+        phone: "",
+        email: "",
+        website: "",
+      },
     },
   });
 
-  const onSubmit = (data: ListingFormData) => {
-    console.log("Form submitted with data:", data);
-  };
+  const onSubmit: SubmitHandler<ListingFormData> = async (data) => {
+    const formData = new FormData();
 
-  const handleFileSelect = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const newFiles = Array.from(event.target.files || []);
-    if (newFiles.length > 0) {
-      setSelectedFiles((prev) => [...prev, ...newFiles]);
+    formData.append("title", data.title);
+    formData.append("description", data.description);
+    formData.append("listingType", data.listingType);
+
+    formData.append("location", JSON.stringify(data.location));
+    formData.append("pricing", JSON.stringify(data.pricing));
+    formData.append("contact", JSON.stringify(data.contact));
+
+    if (data.roomTypes) {
+      formData.append("roomTypes", JSON.stringify(data.roomTypes));
     }
-    // Reset input value so user can select the same file again
-    event.target.value = "";
-  };
 
-  const removeFile = (index: number) => {
-    setSelectedFiles((prev) => prev.filter((_, i) => i !== index));
+    selectedFiles.forEach((file) => {
+      formData.append("images", file);
+    });
+
+    await api.post("/listings", formData, {
+      headers: { "Content-Type": "multipart/form-data" },
+    });
   };
 
   return (
     <div className="max-w-2xl mx-auto px-4 py-6">
+      <button
+        onClick={goBack}
+        title="Go back"
+        className="absolute top-20 left-0 flex items-center mb-5 underline"
+      >
+        <span className="p-1">
+          <ArrowLeft size={16} className="bg-muted rounded-full" />{" "}
+        </span>
+        Go back
+      </button>
+
       <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
         {/* Title */}
         <Input
@@ -96,8 +136,8 @@ export default function CreateListingForm({
             label="University"
             list="ghana-universities"
             placeholder="Start typing related university"
-            {...register("university")}
-            error={errors.university}
+            {...register("location.university")}
+            error={errors.location?.university}
           />
           <datalist id="ghana-universities">
             <option value="University of Ghana" />
@@ -137,8 +177,8 @@ export default function CreateListingForm({
             label="Area"
             type="text"
             placeholder="e.g., Legon, Accra"
-            error={errors.area}
-            {...register("area")}
+            error={errors.location?.area}
+            {...register("location.area")}
           />
 
           <Input
@@ -146,19 +186,20 @@ export default function CreateListingForm({
             label="Address"
             type="text"
             placeholder="Street address"
-            error={errors.address}
-            {...register("address")}
+            error={errors.location?.address}
+            {...register("location.address")}
           />
 
-          <div className="p-4 bg-muted/50 rounded-xl border-2 border-dashed border-border">
-            <MapPin className="w-8 h-8 mx-auto mb-2 text-muted-foreground" />
-            <p className="text-center text-sm text-muted-foreground">
-              Map picker would go here
-            </p>
-            <p className="text-center text-xs text-muted-foreground mt-1">
-              Drag marker to exact location
-            </p>
-          </div>
+          {/* Location Search */}
+
+          {/* <LocationSearch
+          // value={form.location}
+          // onChange={(location) =>
+          //   setForm((prev) => ({
+          //     ...prev,
+          //     location,
+          //   }))
+          /> */}
         </div>
 
         {/* Price */}
@@ -168,81 +209,75 @@ export default function CreateListingForm({
             label="Monthly rent &#40;Gh&#8353;&#41;"
             type="text"
             placeholder="1000"
-            error={errors.monthlyRent}
-            {...register("monthlyRent")}
+            error={errors.pricing?.monthlyPrice}
+            {...register("pricing.monthlyPrice")}
           />
         )}
 
         {/* Room Types (for hostels) */}
-        {providerType === "hostel" && <RoomType />}
+        {providerType === "hostel" && (
+          <RoomType register={register} selected={watch("roomTypes") || []} />
+        )}
 
         {/* Price Range*/}
         {providerType === "hostel" && (
           <div className="bg-white rounded-2xl p-6 shadow-sm space-y-4">
             <h4>Price Range *</h4>
-            <div className="flex justify-around items-center">
-              <div>
-                <label htmlFor="">Minimum Price &#40;Gh&#8353;&#41;</label>
+            <div className="flex flex-col md:flex-row justify-between md:justify-around items-start md:items-center gap-4">
+              <div className="w-full md:w-auto">
+                <label htmlFor="minPrice">
+                  Minimum Price &#40;Gh&#8353;&#41;
+                </label>
                 <br />
                 <input
+                  id="minPrice"
                   placeholder="1000"
-                  className="no-spin px-4 py-3 rounded-xl bg-input-background border focus:border-primary focus:outline-none"
+                  className="w-full md:w-auto no-spin px-4 py-3 rounded-xl bg-input-background border focus:border-primary focus:outline-none"
                   type="number"
+                  min={0}
+                  {...register("pricing.priceRange.min")}
                 />
+                {errors?.pricing?.priceRange?.min && (
+                  <p className="text-red-500 text-sm mt-1">
+                    {errors.pricing?.priceRange?.min.message}
+                  </p>
+                )}
               </div>
 
-              <div>
-                <label htmlFor="">Maximum Price &#40;Gh&#8353;&#41;</label>
+              <div className="w-full md:w-auto">
+                <label htmlFor="maxPrice">
+                  Maximum Price &#40;Gh&#8353;&#41;
+                </label>
                 <br />
                 <input
+                  id="maxPrice"
                   placeholder="5000"
-                  className="no-spin px-4 py-3 rounded-xl bg-input-background border focus:border-primary focus:outline-none"
+                  className="w-full md:w-auto no-spin px-4 py-3 rounded-xl bg-input-background border focus:border-primary focus:outline-none"
                   type="number"
+                  min={0}
+                  {...register("pricing.priceRange.max")}
                 />
+                {errors?.pricing?.priceRange?.max && (
+                  <p className="text-red-500 text-sm mt-1">
+                    {errors.pricing?.priceRange?.max.message}
+                  </p>
+                )}
               </div>
             </div>
           </div>
         )}
-
-        {/* Availability Status */}
-        <div className="bg-white rounded-2xl p-6 shadow-sm">
-          <label className="block mb-2">Availability Status *</label>
-          <select
-            {...register("availabilityStatus")}
-            className="w-full px-4 py-3 rounded-xl bg-input-background border border-transparent focus:border-primary focus:outline-none transition-colors"
-          >
-            <option value="">Select status</option>
-            <option value="available">Available</option>
-            <option value="recently-updated">Recently Updated</option>
-            <option value="inactive">Inactive</option>
-          </select>
-          {errors?.availabilityStatus && (
-            <p className="text-red-500 text-sm mt-1">
-              {errors.availabilityStatus.message}
-            </p>
-          )}
-        </div>
 
         {/* Contact Information */}
         <div className="bg-white rounded-2xl p-6 shadow-sm space-y-4">
           <h3 className="text-lg">Contact Information</h3>
 
           <Input
-            isSubmitting={isSubmitting}
-            label="Contact Name"
-            type="text"
-            placeholder="Your name"
-            error={errors.contactName}
-            {...register("contactName")}
-          />
-
-          <Input
             label="Phone Number"
             isSubmitting={isSubmitting}
             type="tel"
             placeholder="+233 XX XXX XXXX"
-            error={errors.phoneNumber}
-            {...register("phoneNumber")}
+            error={errors.contact?.phone}
+            {...register("contact.phone")}
           />
 
           <Input
@@ -250,69 +285,29 @@ export default function CreateListingForm({
             label="Email (optional)"
             type="email"
             placeholder="email@example.com"
-            error={errors.email}
-            {...register("email")}
+            error={errors.contact?.email}
+            {...register("contact.email")}
           />
+
+          {providerType === "hostel" && (
+            <Input
+              isSubmitting={isSubmitting}
+              label="Hostel Website (if you have any)"
+              type="text"
+              placeholder="https://hostela.gh"
+              error={errors.contact?.website}
+              {...register("contact.website")}
+            />
+          )}
         </div>
 
         {/* Images */}
-        <div className="bg-white rounded-2xl p-6 shadow-sm">
-          <label className="block mb-2">Photos</label>
-          <div
-            onClick={() => fileInputRef.current?.click()}
-            className="border-2 border-dashed border-border rounded-xl p-8 text-center hover:border-primary transition-colors cursor-pointer"
-          >
-            <input
-              ref={fileInputRef}
-              type="file"
-              accept="image/*"
-              multiple
-              onChange={handleFileSelect}
-              className="hidden"
-            />
-            <Upload className="w-12 h-12 mx-auto mb-2 text-muted-foreground" />
-            {selectedFiles.length > 0 ? (
-              <div>
-                <p className="text-sm text-primary font-medium mb-3">
-                  {selectedFiles.length} file
-                  {selectedFiles.length > 1 ? "s" : ""} selected
-                </p>
-                <div className="space-y-2 text-left">
-                  {selectedFiles.map((file, index) => (
-                    <div
-                      key={index}
-                      className="text-xs text-muted-foreground border-t pt-2 flex justify-between items-start"
-                    >
-                      <div>
-                        <p className="font-medium text-primary">{file.name}</p>
-                        <p>{(file.size / 1024 / 1024).toFixed(2)} MB</p>
-                      </div>
-                      <button
-                        type="button"
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          removeFile(index);
-                        }}
-                        className="text-red-500 hover:text-red-700 font-semibold ml-2"
-                      >
-                        ✕
-                      </button>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            ) : (
-              <div>
-                <p className="text-sm text-muted-foreground mb-1">
-                  Click to upload
-                </p>
-                <p className="text-xs text-muted-foreground">
-                  Multiple PNG, JPG files up to 10MB each
-                </p>
-              </div>
-            )}
-          </div>
-        </div>
+        <ImageUpload
+          files={selectedFiles}
+          setFiles={setSelectedFiles}
+          setValue={setValue}
+          error={errors.images}
+        />
 
         {/* Submit Button */}
         <button

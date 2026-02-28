@@ -1,6 +1,6 @@
 import { useRef } from "react";
 import { Upload } from "lucide-react";
-import type { UseFormSetValue, FieldError } from "react-hook-form";
+import type { UseFormSetValue, FieldError, Merge } from "react-hook-form";
 import { z } from "zod";
 import { listingSchema } from "../schema/listing.schema";
 
@@ -10,7 +10,7 @@ interface ImageUploadProps {
   files: File[];
   setFiles: React.Dispatch<React.SetStateAction<File[]>>;
   setValue: UseFormSetValue<FormInput>;
-  error?: FieldError;
+  error?: Merge<FieldError, (FieldError | undefined)[]> | undefined;
 }
 
 export default function ImageUpload({
