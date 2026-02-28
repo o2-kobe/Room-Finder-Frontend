@@ -14,7 +14,7 @@ export function CategoryToggle({ selected, onChange }: CategoryToggleProps) {
     <div className="inline-flex rounded-2xl bg-white p-1 shadow-sm border border-border">
       {categories.map((category) => (
         <button
-          key={category.value}
+          key={category.label}
           onClick={() => onChange(category.value)}
           className={`
             px-2 py-1 md:px-4 md:py-2 rounded-xl transition-all text-sm md:text-base
