@@ -4,7 +4,7 @@ import { type FieldError } from "react-hook-form";
 type FormInputProps = {
   label: string;
   error?: FieldError;
-  isSubmitting: boolean;
+  isSubmitting?: boolean;
   providerType?: "hostel" | "private";
 } & React.InputHTMLAttributes<HTMLInputElement>;
 
