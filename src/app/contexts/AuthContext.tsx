@@ -2,6 +2,7 @@ import { createContext, useEffect, type ReactNode } from "react";
 import { useCurrentUser } from "../hooks/useAuth";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { loginUser, signoutUser, getCurrentUser } from "../services/apiUser";
+import { setAccessToken } from "../services/axiosInstance";
 
 type AuthContextType = {
   user: any | null;
@@ -27,8 +28,9 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
   const loginMutation = useMutation({
     mutationFn: loginUser,
-    onSuccess: async () => {
+    onSuccess: async (data) => {
       try {
+        setAccessToken(data.accessToken);
         const userData = await getCurrentUser();
         queryClient.setQueryData(["currentUser"], userData);
       } catch (err) {
@@ -41,6 +43,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const logoutMutation = useMutation({
     mutationFn: signoutUser,
     onSuccess: () => {
+      setAccessToken(null);
       queryClient.setQueryData(["currentUser"], null);
       queryClient.clear();
     },

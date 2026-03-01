@@ -15,6 +15,7 @@ export function useCurrentUser() {
   return useQuery({
     queryKey: ["currentUser"],
     queryFn: getCurrentUser,
+    refetchOnWindowFocus: false,
     retry: false,
     staleTime: 0, // always verify on mount
   });
