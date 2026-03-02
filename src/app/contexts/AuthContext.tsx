@@ -3,6 +3,7 @@ import { useCurrentUser } from "../hooks/useAuth";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { loginUser, signoutUser, getCurrentUser } from "../services/apiUser";
 import { setAccessToken } from "../services/axiosInstance";
+import { toast } from "sonner";
 
 type AuthContextType = {
   user: any | null;
@@ -33,7 +34,9 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         setAccessToken(data.accessToken);
         const userData = await getCurrentUser();
         queryClient.setQueryData(["currentUser"], userData);
-      } catch (err) {
+        toast.success("Login successful");
+      } catch (err: any) {
+        toast.success(err?.message);
         console.error("Failed to fetch user after login", err);
         throw err;
       }
@@ -46,6 +49,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       setAccessToken(null);
       queryClient.setQueryData(["currentUser"], null);
       queryClient.clear();
+      toast.success("You are logged out!");
     },
   });
 

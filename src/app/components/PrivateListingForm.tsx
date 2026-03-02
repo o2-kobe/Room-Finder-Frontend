@@ -7,8 +7,11 @@ import ImageUpload from "./ImageUpload";
 import AmenitiesInput from "./AmenitiesInput";
 import api from "../services/axiosInstance";
 import { ArrowLeft } from "lucide-react";
+import { toast } from "sonner";
+import { useNavigate } from "react-router";
 
 export default function PrivateListingForm({ goBack }: { goBack: () => void }) {
+  const navigate = useNavigate();
   const [selectedFiles, setSelectedFiles] = useState<File[]>([]);
 
   const {
@@ -40,13 +43,13 @@ export default function PrivateListingForm({ goBack }: { goBack: () => void }) {
       availabilityStatus: "available",
       contact: {
         phone: "",
-        email: "",
       },
     },
   });
 
   const onSubmit: SubmitHandler<PrivateFormData> = async (data) => {
     try {
+      toast.loading("Creating Rental Listing");
       const formData = new FormData();
 
       formData.append("title", data.title);
@@ -62,14 +65,12 @@ export default function PrivateListingForm({ goBack }: { goBack: () => void }) {
         formData.append("images", file);
       });
 
-      console.log("🏠 Submitting private listing...");
-      console.log(Object.fromEntries(formData.entries()));
-
       await api.post("/listings", formData);
-
-      alert("Private listing created");
+      navigate("/");
+      toast.dismiss();
+      toast.success("Listing created successfully");
     } catch (error) {
-      console.error("❌ Private creation failed", error);
+      toast.error("Private creation failed");
     }
   };
 
@@ -85,6 +86,10 @@ export default function PrivateListingForm({ goBack }: { goBack: () => void }) {
         </span>
         Go back
       </button>
+
+      <h3 className="hidden md:block text-center my-4">
+        CREATE PRIVATE RENTAL FORM
+      </h3>
       <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
         <Input
           label="Title"
@@ -198,15 +203,6 @@ export default function PrivateListingForm({ goBack }: { goBack: () => void }) {
             placeholder="+233 XX XXX XXXX"
             error={errors.contact?.phone}
             {...register("contact.phone")}
-          />
-
-          <Input
-            isSubmitting={isSubmitting}
-            label="Email (optional)"
-            type="email"
-            placeholder="email@example.com"
-            error={errors.contact?.email}
-            {...register("contact.email")}
           />
         </div>
 

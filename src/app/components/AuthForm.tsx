@@ -9,6 +9,7 @@ import {
 } from "../schema/user.schema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useNavigate } from "react-router";
+import { toast } from "sonner";
 
 const LoginForm = ({
   type,
@@ -55,7 +56,7 @@ const LoginForm = ({
       }
       navigate("/profile");
     } catch (err) {
-      console.error("submitFn failed", err);
+      toast.error("Failed to login");
     }
   };
 
@@ -76,9 +77,7 @@ const LoginForm = ({
         </p>
 
         <form
-          onSubmit={handleSubmit(onSubmit, (errors) => {
-            console.log("validation errors", errors);
-          })}
+          onSubmit={handleSubmit(onSubmit)}
           className="flex flex-col gap-3 items-center w-full mx-auto"
         >
           {type === "signup" ? (
