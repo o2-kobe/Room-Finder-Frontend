@@ -2,9 +2,10 @@ import { useState } from "react";
 import { Building2, Home } from "lucide-react";
 import { BottomNavigation } from "../components/BottomNavigation";
 import { DesktopNavigation } from "../components/DesktopNavigation";
-import CreateListingForm from "../components/CreateListingForm";
 import MobileHeader from "../components/MobileHeader";
 import ProtectedRoute from "../components/ProtectedRoute";
+import HostelListingForm from "../components/HostelListingForm";
+import PrivateListingForm from "../components/PrivateListingForm";
 
 export default function AddListingPage() {
   const [step, setStep] = useState<"select-type" | "form">("select-type");
@@ -14,6 +15,8 @@ export default function AddListingPage() {
     setProviderType(type);
     setStep("form");
   };
+
+  const goBack = () => setStep("select-type");
 
   if (step === "select-type") {
     return (
@@ -69,10 +72,11 @@ export default function AddListingPage() {
         heading={`Add ${providerType === "hostel" ? "Hostel" : "Private Rental"}`}
       />
 
-      <CreateListingForm
-        goBack={() => setStep("select-type")}
-        providerType={providerType}
-      />
+      {providerType === "hostel" ? (
+        <HostelListingForm goBack={goBack} />
+      ) : (
+        <PrivateListingForm goBack={goBack} />
+      )}
 
       <BottomNavigation />
     </div>
