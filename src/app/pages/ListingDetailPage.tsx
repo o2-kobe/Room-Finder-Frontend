@@ -18,6 +18,7 @@ import type { ListingDocument } from "../Types/listing";
 import { StatusBadge } from "../components/StatusBadge";
 import Loading from "../components/Loading";
 import RecentSpan from "../components/RecentlyUpdated";
+import { convertToTitleCase } from "../utils/helper";
 
 const ListingDetailPage = () => {
   const { id } = useParams();
@@ -136,7 +137,7 @@ const ListingDetailPage = () => {
             {listing.amenities
               ? listing.amenities.map((item) => (
                   <span className="text-accent" key={item}>
-                    {item},{" "}
+                    {convertToTitleCase(item)},{" "}
                   </span>
                 ))
               : "no amenities attached"}

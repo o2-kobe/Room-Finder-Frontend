@@ -3,6 +3,7 @@ import { StatusBadge } from "./StatusBadge";
 import { formatDistanceToNow } from "date-fns";
 import type { ListingDocument } from "../Types/listing";
 import UniversitySpan from "./UniversitySpan";
+import { convertToTitleCase } from "../utils/helper";
 
 interface ListingCardProps {
   listing: ListingDocument;
@@ -28,7 +29,9 @@ export function ListingCard({ listing, onClick }: ListingCardProps) {
 
       <div className="relative">
         <div className="p-4 space-y-2">
-          <h3 className="text-lg line-clamp-1">{listing.title}</h3>
+          <h3 className="text-lg line-clamp-1">
+            {convertToTitleCase(listing.title)}
+          </h3>
 
           <div className="flex items-center gap-1 text-sm text-muted-foreground">
             <MapPin className="w-4 h-4" />
