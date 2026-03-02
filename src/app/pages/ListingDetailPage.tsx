@@ -19,6 +19,7 @@ import { StatusBadge } from "../components/StatusBadge";
 import Loading from "../components/Loading";
 import RecentSpan from "../components/RecentlyUpdated";
 import { convertToTitleCase } from "../utils/helper";
+import { ImageSlider } from "../components/Slider";
 
 const ListingDetailPage = () => {
   const { id } = useParams();
@@ -61,16 +62,12 @@ const ListingDetailPage = () => {
 
       {/* Image Header */}
       <div className="relative h-72 overflow-hidden">
-        <img
-          src="room.png"
-          alt={listing.title}
-          className="w-full h-full object-cover"
-        />
+        <ImageSlider images={listing.images} />
         <button
           onClick={() => navigate(-1)}
-          className="absolute top-4 left-4 p-2 bg-white/90 backdrop-blur-sm rounded-full hover:bg-white transition-colors"
+          className="absolute top-4 left-4 p-2 bg-primary backdrop-blur-sm z-50 rounded-full hover:bg-blue-900 transition-colors"
         >
-          <ArrowLeft className="w-5 h-5" />
+          <ArrowLeft color="white" className="w-5 h-5" />
         </button>
       </div>
 
