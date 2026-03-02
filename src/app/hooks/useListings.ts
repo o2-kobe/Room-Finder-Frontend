@@ -10,6 +10,9 @@ import {
   findListing,
   getListings,
   getMapListings,
+  getPropertiesOfOwner,
+  markListingAsAvailable,
+  markListingAsInactive,
   updateListing,
 } from "../services/apiListings";
 import { type ListingFilters } from "../Types/listing";
@@ -40,6 +43,14 @@ export function useListing(listingId: string) {
     queryKey: ["listing", listingId],
     queryFn: () => findListing(listingId),
     enabled: !!listingId,
+    staleTime: 1000 * 60 * 30,
+  });
+}
+
+export function useListingsOfPropertyOwner() {
+  return useQuery({
+    queryKey: ["listingofOwner"],
+    queryFn: getPropertiesOfOwner,
     staleTime: 1000 * 60 * 30,
   });
 }
@@ -80,6 +91,33 @@ export function useDeleteListing() {
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["listings"] });
       queryClient.invalidateQueries({ queryKey: ["map-listings"] });
+      queryClient.invalidateQueries({ queryKey: ["listingofOwner"] });
+    },
+  });
+}
+
+export function useMarkListingAsAvailable() {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: (listingId: string) => markListingAsAvailable(listingId),
+
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["listings"] });
+      queryClient.invalidateQueries({ queryKey: ["listingofOwner"] });
+    },
+  });
+}
+
+export function useMarkListingAsInactive() {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: (listingId: string) => markListingAsInactive(listingId),
+
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["listings"] });
+      queryClient.invalidateQueries({ queryKey: ["listingofOwner"] });
     },
   });
 }

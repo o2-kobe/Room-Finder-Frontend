@@ -1,8 +1,5 @@
-import type {
-  ListingDocument,
-  ListingFilters,
-  // UpdateListingType,
-} from "../Types/listing";
+import type { CreateListingFormData } from "../schema/listing.schema";
+import type { ListingFilters } from "../Types/listing";
 import api from "./axiosInstance";
 
 // Find listings for home and explore pages
@@ -38,7 +35,7 @@ export async function findListing(listingId: string) {
   return data;
 }
 
-export async function createListing(listingData: ListingDocument) {
+export async function createListing(listingData: CreateListingFormData) {
   const { data } = await api.post("/listings/", listingData);
 
   return data;
@@ -52,6 +49,12 @@ export async function updateListing(listingId: string, update: {}) {
 
 export async function deleteListing(listingId: string) {
   const { data } = await api.patch(`/listings/${listingId}`);
+
+  return data;
+}
+
+export async function getPropertiesOfOwner() {
+  const { data } = await api.get("/listings-propertyOwner");
 
   return data;
 }
