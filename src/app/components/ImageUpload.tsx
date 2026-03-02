@@ -1,33 +1,39 @@
 import { useRef } from "react";
 import { Upload } from "lucide-react";
-import type { UseFormSetValue, FieldError, Merge } from "react-hook-form";
-import { z } from "zod";
-import { listingSchema } from "../schema/listing.schema";
+import {
+  type UseFormSetValue,
+  type FieldError,
+  type FieldValues,
+  type Path,
+  type PathValue,
+  type Merge,
+} from "react-hook-form";
 
-type FormInput = z.input<typeof listingSchema>;
+// 1. Define the requirement for the generic
+interface HasImages {
+  images?: File[];
+}
 
-interface ImageUploadProps {
+interface ImageUploadProps<T extends FieldValues & HasImages> {
   files: File[];
   setFiles: React.Dispatch<React.SetStateAction<File[]>>;
-  setValue: UseFormSetValue<FormInput>;
+  setValue: UseFormSetValue<T>;
   error?: Merge<FieldError, (FieldError | undefined)[]> | undefined;
 }
 
-export default function ImageUpload({
+export default function ImageUpload<T extends FieldValues & HasImages>({
   files,
   setFiles,
   setValue,
   error,
-}: ImageUploadProps) {
+}: ImageUploadProps<T>) {
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   const handleFileSelect = (event: React.ChangeEvent<HTMLInputElement>) => {
     const selected = Array.from(event.target.files || []);
-
     if (!selected.length) return;
 
     const updatedFiles = [...files, ...selected];
-
     if (updatedFiles.length > 3) {
       alert("You can only upload a maximum of 3 images.");
       return;
@@ -35,8 +41,8 @@ export default function ImageUpload({
 
     setFiles(updatedFiles);
 
-    // Register inside RHF
-    setValue("images", updatedFiles, {
+    // 2. Cast "images" as Path<T> and the value as PathValue
+    setValue("images" as Path<T>, updatedFiles as PathValue<T, Path<T>>, {
       shouldValidate: true,
     });
 
@@ -47,7 +53,7 @@ export default function ImageUpload({
     const updatedFiles = files.filter((_, i) => i !== index);
     setFiles(updatedFiles);
 
-    setValue("images", updatedFiles, {
+    setValue("images" as Path<T>, updatedFiles as PathValue<T, Path<T>>, {
       shouldValidate: true,
     });
   };
@@ -55,7 +61,6 @@ export default function ImageUpload({
   return (
     <div className="bg-white rounded-2xl p-6 shadow-sm">
       <label className="block mb-2 font-medium">Photos (Max 3)</label>
-
       <div
         onClick={() => fileInputRef.current?.click()}
         className="border-2 border-dashed rounded-xl p-8 text-center cursor-pointer hover:border-primary transition-colors"
@@ -68,9 +73,7 @@ export default function ImageUpload({
           onChange={handleFileSelect}
           className="hidden"
         />
-
         <Upload className="w-12 h-12 mx-auto mb-2 text-muted-foreground" />
-
         {files.length === 0 && (
           <p className="text-sm text-muted-foreground">
             Click to upload (Maximum 3 images)
@@ -92,7 +95,6 @@ export default function ImageUpload({
                     {(file.size / 1024 / 1024).toFixed(2)} MB
                   </p>
                 </div>
-
                 <button
                   type="button"
                   onClick={(e) => {
@@ -108,7 +110,6 @@ export default function ImageUpload({
           </div>
         )}
       </div>
-
       {error && <p className="text-red-500 text-sm mt-2">{error.message}</p>}
     </div>
   );
