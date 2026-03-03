@@ -9,6 +9,7 @@ import api from "../services/axiosInstance";
 import { ArrowLeft } from "lucide-react";
 import { toast } from "sonner";
 import { useNavigate } from "react-router";
+import LocationSearch from "./LocationSearch";
 
 export default function PrivateListingForm({ goBack }: { goBack: () => void }) {
   const navigate = useNavigate();
@@ -179,6 +180,12 @@ export default function PrivateListingForm({ goBack }: { goBack: () => void }) {
             placeholder="Street address"
             error={errors.location?.address}
             {...register("location.address")}
+          />
+
+          <LocationSearch<PrivateFormData>
+            setValue={setValue}
+            addressField="location.address"
+            coordinatesField="location.coordinates"
           />
         </div>
 

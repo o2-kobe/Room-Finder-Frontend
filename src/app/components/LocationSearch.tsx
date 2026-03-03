@@ -1,58 +1,107 @@
-import { useLoadScript, Autocomplete } from "@react-google-maps/api";
-import { useRef } from "react";
+import { useState, useEffect } from "react";
+import {
+  type FieldValues,
+  type UseFormSetValue,
+  type Path,
+} from "react-hook-form";
 
-interface LocationValue {
-  address: string;
-  lat: number;
-  lng: number;
+interface Suggestion {
+  display_name: string;
+  lat: string;
+  lon: string;
 }
 
-interface LocationSearchProps {
-  value?: LocationValue;
-  onChange?: (location: LocationValue) => void;
+interface LocationSearchProps<T extends FieldValues> {
+  setValue: UseFormSetValue<T>;
+  addressField: Path<T>;
+  coordinatesField: Path<T>;
 }
 
-const libraries: "places"[] = ["places"];
+export default function LocationSearch<T extends FieldValues>({
+  setValue,
+  addressField,
+  coordinatesField,
+}: LocationSearchProps<T>) {
+  const [query, setQuery] = useState("");
+  const [results, setResults] = useState<Suggestion[]>([]);
+  const [loading, setLoading] = useState(false);
 
-export function LocationSearch({ value, onChange }: LocationSearchProps) {
-  const autocompleteRef = useRef<google.maps.places.Autocomplete | null>(null);
+  const API_KEY = import.meta.env.VITE_LOCATIONIQ_API_KEY;
 
-  const { isLoaded } = useLoadScript({
-    googleMapsApiKey: import.meta.env.VITE_GOOGLE_MAPS_API_KEY,
-    libraries,
-  });
+  useEffect(() => {
+    if (query.length < 3) {
+      setResults([]);
+      return;
+    }
 
-  if (!isLoaded) return <p>Loading...</p>;
+    const fetchSuggestions = async () => {
+      setLoading(true);
+      try {
+        const res = await fetch(
+          `https://us1.locationiq.com/v1/autocomplete.php?key=${API_KEY}&q=${query}&format=json&countrycodes=gh`,
+        );
 
-  const handlePlaceChanged = () => {
-    const place = autocompleteRef.current?.getPlace();
+        const data = await res.json();
+        setResults(data);
+      } catch (error) {
+        console.error("LocationIQ error:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
 
-    if (!place?.geometry?.location) return;
+    const debounce = setTimeout(fetchSuggestions, 400);
+    return () => clearTimeout(debounce);
+  }, [query]);
 
-    const lat = place.geometry.location.lat();
-    const lng = place.geometry.location.lng();
+  const handleSelect = (place: Suggestion) => {
+    // Set address dynamically
+    setValue(addressField, place.display_name as any);
 
-    onChange &&
-      onChange({
-        address: place.formatted_address || "",
-        lat,
-        lng,
-      });
+    // Set coordinates dynamically
+    setValue(coordinatesField, {
+      type: "Point",
+      coordinates: [Number(place.lon), Number(place.lat)],
+    } as any);
+
+    setQuery(place.display_name);
+    setResults([]);
   };
 
   return (
-    // <div className="space-y-5 bg-white rounded-2xl p-6 shadow-sm">
-    <Autocomplete
-      onLoad={(ref) => (autocompleteRef.current = ref)}
-      onPlaceChanged={handlePlaceChanged}
-    >
+    <div className="relative w-full mt-4">
+      <label className="text-accent" htmlFor="Exact-location">
+        Type in closest landmark (or PropertyName) to get exact
+        address(location) *
+      </label>
       <input
+        id="Exact-Location"
         type="text"
-        defaultValue={value?.address}
-        placeholder="Search nearest landmark to insert coordinates..."
-        className="w-full px-4 py-3 rounded-xl border"
+        placeholder="Search exact property location..."
+        value={query}
+        onChange={(e) => setQuery(e.target.value)}
+        className="w-full border rounded-lg px-4 py-2"
       />
-    </Autocomplete>
-    // </div>
+
+      {loading && (
+        <div className="absolute bg-white w-full shadow-md p-2 text-sm">
+          Searching...
+        </div>
+      )}
+
+      {results.length > 0 && (
+        <ul className="absolute bg-white w-full shadow-lg rounded-lg mt-1 max-h-60 overflow-y-auto z-50">
+          {results.map((place, index) => (
+            <li
+              key={index}
+              onClick={() => handleSelect(place)}
+              className="px-4 py-2 hover:bg-gray-100 cursor-pointer text-sm"
+            >
+              {place.display_name}
+            </li>
+          ))}
+        </ul>
+      )}
+    </div>
   );
 }

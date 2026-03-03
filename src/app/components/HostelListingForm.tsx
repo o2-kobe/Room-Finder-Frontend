@@ -10,6 +10,7 @@ import api from "../services/axiosInstance";
 import { ArrowLeft } from "lucide-react";
 import { toast } from "sonner";
 import { useNavigate } from "react-router";
+import LocationSearch from "./LocationSearch";
 
 export default function HostelListingForm({ goBack }: { goBack: () => void }) {
   const navigate = useNavigate();
@@ -124,65 +125,65 @@ export default function HostelListingForm({ goBack }: { goBack: () => void }) {
 
         <AmenitiesInput control={control} errors={errors} />
 
-        <Input
-          isSubmitting={isSubmitting}
-          type="text"
-          label="University"
-          list="ghana-universities"
-          placeholder="Start typing related university"
-          {...register("location.university")}
-          error={errors.location?.university}
-        />
-        <datalist id="ghana-universities">
-          <option value="University of Ghana" />
-          <option value="Kwame Nkrumah University of Science and Technology" />
-          <option value="University of Cape Coast" />
-          <option value="University of Education, Winneba" />
-          <option value="University for Development Studies" />
-          <option value="University of Professional Studies, Accra" />
-          <option value="University of Health and Allied Sciences" />
-          <option value="Ghana Institute of Management and Public Administration" />
-          <option value="Ghana Communication Technology University" />
-          <option value="Accra Technical University" />
-          <option value="Kumasi Technical University" />
-          <option value="Takoradi Technical University" />
-          <option value="Ho Technical University" />
-          <option value="Koforidua Technical University" />
-          <option value="Cape Coast Technical University" />
-          <option value="Tamale Technical University" />
-          <option value="Sunyani Technical University" />
-          <option value="Bolgatanga Technical University" />
-          <option value="Ashesi University" />
-          <option value="Central University" />
-          <option value="Valley View University" />
-          <option value="Islamic University College, Ghana" />
-          <option value="Methodist University Ghana" />
-          <option value="Presbyterian University, Ghana" />
-          <option value="Pentecost University" />
-          <option value="Lancaster University Ghana" />
-          <option value="African University College of Communications" />
-          <option value="Garden City University College" />
-          <option value="Kings University College" />
-          <option value="Wisconsin International University College, Ghana" />
-        </datalist>
+        <div className="bg-white rounded-2xl p-6 shadow-sm">
+          <h4 className="mb-2">Location</h4>
+          <Input
+            isSubmitting={isSubmitting}
+            type="text"
+            label="University"
+            list="ghana-universities"
+            placeholder="Start typing related university"
+            {...register("location.university")}
+            error={errors.location?.university}
+          />
+          <datalist id="ghana-universities">
+            <option value="University of Ghana" />
+            <option value="Kwame Nkrumah University of Science and Technology" />
+            <option value="University of Cape Coast" />
+            <option value="University of Education, Winneba" />
+            <option value="University for Development Studies" />
+            <option value="University of Professional Studies, Accra" />
+            <option value="University of Health and Allied Sciences" />
+            <option value="Ghana Institute of Management and Public Administration" />
+            <option value="Ghana Communication Technology University" />
+            <option value="Accra Technical University" />
+            <option value="Kumasi Technical University" />
+            <option value="Takoradi Technical University" />
+            <option value="Ho Technical University" />
+            <option value="Koforidua Technical University" />
+            <option value="Cape Coast Technical University" />
+            <option value="Tamale Technical University" />
+            <option value="Sunyani Technical University" />
+            <option value="Bolgatanga Technical University" />
+            <option value="Ashesi University" />
+            <option value="Central University" />
+            <option value="Valley View University" />
+            <option value="Islamic University College, Ghana" />
+            <option value="Methodist University Ghana" />
+            <option value="Presbyterian University, Ghana" />
+            <option value="Pentecost University" />
+            <option value="Lancaster University Ghana" />
+            <option value="African University College of Communications" />
+            <option value="Garden City University College" />
+            <option value="Kings University College" />
+            <option value="Wisconsin International University College, Ghana" />
+          </datalist>
 
-        <Input
-          isSubmitting={isSubmitting}
-          label="Area"
-          type="text"
-          placeholder="e.g., Legon, Accra"
-          error={errors.location?.area}
-          {...register("location.area")}
-        />
+          <Input
+            isSubmitting={isSubmitting}
+            label="Area"
+            type="text"
+            placeholder="e.g., Legon, Accra"
+            error={errors.location?.area}
+            {...register("location.area")}
+          />
 
-        <Input
-          isSubmitting={isSubmitting}
-          label="Address"
-          type="text"
-          placeholder="Street address"
-          error={errors.location?.address}
-          {...register("location.address")}
-        />
+          <LocationSearch<HostelFormData>
+            setValue={setValue}
+            addressField="location.address"
+            coordinatesField="location.coordinates"
+          />
+        </div>
 
         <RoomType register={register} selected={watch("roomTypes")} />
 
