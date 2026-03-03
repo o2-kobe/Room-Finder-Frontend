@@ -2,6 +2,7 @@ import type { ListingDocument } from "../Types/listing";
 import { ListingCard } from "./ListingCard";
 import React from "react";
 
+// Two days in milliseconds
 const ONE_DAY_IN_MS = 1000 * 60 * 60 * 48;
 
 export const RecentlyUpdated = ({
@@ -9,8 +10,6 @@ export const RecentlyUpdated = ({
 }: {
   listings: ListingDocument[];
 }) => {
-  // Two days in milliseconds
-
   const recents: ListingDocument[] = listings.filter((listing) => {
     const updated = new Date(listing.updatedAt).getTime();
     if (!Number.isFinite(updated)) return false;
@@ -42,7 +41,7 @@ const RecentSpan = ({ updateTime }: { updateTime: Date }) => {
   if (!Number.isFinite(updated)) return false;
   if (Date.now() - updated <= ONE_DAY_IN_MS)
     return (
-      <span className="flex items-center w-fit text-sm px-1 bg-[#d0d630] text-white font-bold rounded-md">
+      <span className="flex items-center shadow-lg w-fit text-sm px-2 py-0.5 bg-[#d2de2c] text-white font-bold rounded-md">
         recently updated
       </span>
     );

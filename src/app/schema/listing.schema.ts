@@ -22,7 +22,6 @@ const baseSchema = z.object({
   availabilityStatus: z.enum(["available", "inactive"]),
   contact: z.object({
     phone: z.string().regex(/^\d{10}$/),
-    email: z.string().email().optional(),
   }),
 });
 
