@@ -5,6 +5,7 @@ import type { ListingDocument } from "../Types/listing";
 import { convertToTitleCase } from "../utils/helper";
 import { UpdatePriceModal } from "./UpdatePriceModal";
 import { ConfirmDeleteModal } from "./ConfirmDeleteModal";
+import { useNavigate } from "react-router";
 
 interface OwnerListingCardProps {
   listing: ListingDocument;
@@ -14,6 +15,8 @@ interface OwnerListingCardProps {
   onUpdatePrice?: (id: string, price: number) => void;
 }
 
+const BASE_URL = "http://localhost:5000";
+
 export function OwnerListingCard({
   listing,
   onMarkAvailable,
@@ -21,6 +24,7 @@ export function OwnerListingCard({
   onDelete,
   onUpdatePrice,
 }: OwnerListingCardProps) {
+  const navigate = useNavigate();
   const [showPriceModal, setShowPriceModal] = useState(false);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
 
@@ -37,7 +41,7 @@ export function OwnerListingCard({
         {/* Image */}
         <div className="h-48 overflow-hidden">
           <img
-            src="room.png"
+            src={`${BASE_URL}${listing.images[0]}`}
             alt={listing.title}
             className="w-full h-full object-cover"
           />
@@ -45,9 +49,18 @@ export function OwnerListingCard({
 
         {/* Content */}
         <div className="p-4 space-y-3">
-          <h3 className="text-lg font-semibold line-clamp-1">
-            {convertToTitleCase(listing.title)}
-          </h3>
+          <div className="flex items-center justify-between">
+            <h3 className="text-base md:text-lg font-semibold line-clamp-1">
+              {convertToTitleCase(listing.title)}
+            </h3>
+
+            <span
+              onClick={() => navigate(`/explore/listing/${listing.id}`)}
+              className="text-sm md:text-base underline text-primary cursor-pointer hover:text-blue-900"
+            >
+              View details
+            </span>
+          </div>
 
           <div className="flex items-center gap-1 text-sm text-muted-foreground">
             <MapPin className="w-4 h-4" />
@@ -98,7 +111,7 @@ export function OwnerListingCard({
 
               <button
                 onClick={() => setShowDeleteModal(true)}
-                className="px-3 py-1 text-sm bg-red-100 text-red-700 rounded-lg hover:bg-red-200 transition"
+                className="px-3 py-1 text-sm bg-red-100 border border-gray-200 text-red-700 rounded-lg hover:bg-red-200 transition"
               >
                 Delete
               </button>
