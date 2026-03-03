@@ -70,3 +70,17 @@ export async function markListingAsInactive(listingId: string) {
 
   return data;
 }
+
+export async function updateListingPrice({
+  listingId,
+  newPrice,
+}: {
+  listingId: string;
+  newPrice: number;
+}) {
+  const { data } = await api.patch(`/updateListingPrice/${listingId}`, {
+    price: newPrice,
+  });
+
+  return data;
+}

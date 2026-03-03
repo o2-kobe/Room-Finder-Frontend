@@ -14,6 +14,7 @@ import {
   markListingAsAvailable,
   markListingAsInactive,
   updateListing,
+  updateListingPrice,
 } from "../services/apiListings";
 import { type ListingFilters } from "../Types/listing";
 
@@ -118,6 +119,20 @@ export function useMarkListingAsInactive() {
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["listings"] });
       queryClient.invalidateQueries({ queryKey: ["listingofOwner"] });
+    },
+  });
+}
+
+export function useUpdateListingPrice() {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: updateListingPrice,
+
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["listings"] });
+      queryClient.invalidateQueries({ queryKey: ["listingofOwner"] });
+      queryClient.invalidateQueries({ queryKey: ["map-listings"] });
     },
   });
 }
