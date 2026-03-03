@@ -5,6 +5,8 @@ import type { ListingDocument } from "../Types/listing";
 import UniversitySpan from "./UniversitySpan";
 import { convertToTitleCase } from "../utils/helper";
 
+const BASE_IMAGE_URL = "http://localhost:5000";
+
 interface ListingCardProps {
   listing: ListingDocument;
   onClick?: () => void;
@@ -18,7 +20,7 @@ export function ListingCard({ listing, onClick }: ListingCardProps) {
     >
       <div className="relative h-48 overflow-hidden">
         <img
-          src="room.png"
+          src={`${BASE_IMAGE_URL}${listing.images[0]}`}
           alt={listing.title}
           className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300"
         />
