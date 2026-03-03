@@ -4,6 +4,7 @@ import { BottomNavigation } from "../components/BottomNavigation";
 import { DesktopNavigation } from "../components/DesktopNavigation";
 import { useAuth } from "../hooks/useAuth";
 import ProtectedRoute from "../components/ProtectedRoute";
+import PropertiesofOwner from "../components/PropertiesofOwner";
 
 export default function ProfilePage() {
   const navigate = useNavigate();
@@ -39,15 +40,10 @@ export default function ProfilePage() {
                 <LogOut className="w-5 h-5" /> Logout
               </button>
             </div>
-
-            {/* <div className="bg-white/10 backdrop-blur-sm rounded-xl p-4 w-1/3">
-            <p className="text-sm text-primary-foreground/80 mb-1">
-              Active Listings
-            </p>
-            <p className="text-2xl">{activeListings.length}</p>
-          </div> */}
           </div>
         </header>
+
+        <PropertiesofOwner />
 
         <BottomNavigation />
       </div>
