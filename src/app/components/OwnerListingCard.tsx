@@ -6,13 +6,14 @@ import { convertToTitleCase } from "../utils/helper";
 import { UpdatePriceModal } from "./UpdatePriceModal";
 import { ConfirmDeleteModal } from "./ConfirmDeleteModal";
 import { useNavigate } from "react-router";
+import { toast } from "sonner";
 
 interface OwnerListingCardProps {
   listing: ListingDocument;
   onMarkAvailable?: (id: string) => void;
   onMarkInactive?: (id: string) => void;
   onDelete?: (id: string) => void;
-  onUpdatePrice?: (id: string, price: number) => void;
+  onUpdatePrice?: (variables: { listingId: string; newPrice: number }) => void;
 }
 
 const BASE_URL = "http://localhost:5000";
@@ -88,14 +89,28 @@ export function OwnerListingCard({
             <div className="flex flex-wrap gap-2 pt-2">
               {isAvailable ? (
                 <button
-                  onClick={() => onMarkInactive?.(listing.id)}
+                  onClick={() => {
+                    try {
+                      onMarkInactive?.(listing.id);
+                      toast.success("Listing updated successfully");
+                    } catch {
+                      toast.error("Failed to update listing");
+                    }
+                  }}
                   className="px-3 py-1 text-sm shadow-md border border-gray-200 bg-yellow-300 text-white rounded-lg hover:bg-yellow-400 transition"
                 >
                   Mark Inactive
                 </button>
               ) : (
                 <button
-                  onClick={() => onMarkAvailable?.(listing.id)}
+                  onClick={() => {
+                    try {
+                      onMarkAvailable?.(listing.id);
+                      toast.success("Listing updated successfully");
+                    } catch {
+                      toast.error("Failed to updated listing");
+                    }
+                  }}
                   className="px-3 py-1 text-sm border border-gray-200 bg-green-400 rounded-lg text-white hover:bg-green-300 transition"
                 >
                   Mark Available
@@ -126,7 +141,10 @@ export function OwnerListingCard({
           currentPrice={currentPrice || 0}
           onClose={() => setShowPriceModal(false)}
           onSubmit={(price) => {
-            onUpdatePrice?.(listing.id, price);
+            onUpdatePrice?.({
+              listingId: listing.id,
+              newPrice: price,
+            });
             setShowPriceModal(false);
           }}
         />
