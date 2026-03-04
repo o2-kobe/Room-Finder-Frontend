@@ -48,7 +48,7 @@ export async function updateListing(listingId: string, update: {}) {
 }
 
 export async function deleteListing(listingId: string) {
-  const { data } = await api.patch(`/listings/${listingId}`);
+  const { data } = await api.delete(`/listings/${listingId}`);
 
   return data;
 }
@@ -71,15 +71,9 @@ export async function markListingAsInactive(listingId: string) {
   return data;
 }
 
-export async function updateListingPrice({
-  listingId,
-  newPrice,
-}: {
-  listingId: string;
-  newPrice: number;
-}) {
+export async function updateListingPrice(listingId: string, newPrice: number) {
   const { data } = await api.patch(`/updateListingPrice/${listingId}`, {
-    price: newPrice,
+    newPrice,
   });
 
   return data;

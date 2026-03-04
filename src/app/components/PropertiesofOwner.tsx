@@ -4,6 +4,7 @@ import {
   useListingsOfPropertyOwner,
   useMarkListingAsAvailable,
   useMarkListingAsInactive,
+  useUpdateListingPrice,
 } from "../hooks/useListings";
 import type { ListingDocument } from "../Types/listing";
 import { OwnerListingCard } from "./OwnerListingCard";
@@ -15,6 +16,7 @@ const PropertiesofOwner = () => {
   const { mutate: markAvilable } = useMarkListingAsAvailable();
   const { mutate: markInactive } = useMarkListingAsInactive();
   const { mutate: deleteListing } = useDeleteListing();
+  const { mutate: updatePrice } = useUpdateListingPrice();
 
   return (
     <div className="px-4">
@@ -40,6 +42,7 @@ const PropertiesofOwner = () => {
                 onDelete={deleteListing}
                 onMarkAvailable={markAvilable}
                 onMarkInactive={markInactive}
+                onUpdatePrice={updatePrice}
                 listing={listing}
               />
             ))}

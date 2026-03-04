@@ -127,7 +127,13 @@ export function useUpdateListingPrice() {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: updateListingPrice,
+    mutationFn: ({
+      listingId,
+      newPrice,
+    }: {
+      listingId: string;
+      newPrice: number;
+    }) => updateListingPrice(listingId, newPrice),
 
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["listings"] });
