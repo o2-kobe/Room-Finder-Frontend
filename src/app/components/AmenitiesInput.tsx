@@ -7,30 +7,25 @@ import {
   useController,
 } from "react-hook-form";
 
-// 1. We create a guarantee for TypeScript that whatever form uses this, it has an 'amenities' array
 interface BaseAmenitiesForm {
   amenities: string[];
 }
 
-// 2. We use a Generic <T> that merges React Hook Form's base types with our guarantee
 interface AmenitiesInputProps<T extends FieldValues & BaseAmenitiesForm> {
   control: Control<T>;
   errors: FieldErrors<T>;
 }
 
-// 3. Make the component itself generic
 export default function AmenitiesInput<
   T extends FieldValues & BaseAmenitiesForm,
 >({ control, errors }: AmenitiesInputProps<T>) {
   const [inputValue, setInputValue] = useState("");
 
   const { field } = useController({
-    // We cast the name to Path<T> so useController knows it strictly belongs to the parent form
     name: "amenities" as Path<T>,
     control,
   });
 
-  // 4. Explicitly type the value as an array of strings to fix mapping errors
   const amenities: string[] = field.value || [];
 
   const handleAdd = () => {
@@ -99,7 +94,6 @@ export default function AmenitiesInput<
         </div>
       )}
 
-      {/* Accessing errors dynamically is safe because we guaranteed 'amenities' exists in our Generic */}
       {errors.amenities && (
         <p className="text-red-500 text-sm">
           {errors.amenities.message as string}

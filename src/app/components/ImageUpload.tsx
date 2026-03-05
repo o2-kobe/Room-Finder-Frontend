@@ -9,7 +9,6 @@ import {
   type Merge,
 } from "react-hook-form";
 
-// 1. Define the requirement for the generic
 interface HasImages {
   images?: File[];
 }
@@ -41,7 +40,7 @@ export default function ImageUpload<T extends FieldValues & HasImages>({
 
     setFiles(updatedFiles);
 
-    // 2. Cast "images" as Path<T> and the value as PathValue
+    //  Cast "images" as Path<T> and the value as PathValue
     setValue("images" as Path<T>, updatedFiles as PathValue<T, Path<T>>, {
       shouldValidate: true,
     });

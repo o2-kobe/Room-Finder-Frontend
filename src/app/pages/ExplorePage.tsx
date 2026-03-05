@@ -1,4 +1,3 @@
-// import { useState } from "react";
 import { useNavigate } from "react-router";
 import { Loader, MapIcon } from "lucide-react";
 import { ListingCard } from "../components/ListingCard";

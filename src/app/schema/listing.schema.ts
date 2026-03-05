@@ -12,7 +12,6 @@ const locationSchema = z.object({
   coordinates: coordinatesSchema,
 });
 
-// 1. Make baseSchema a real z.object
 const baseSchema = z.object({
   title: z.string().min(10).max(100),
   description: z.string().min(10).max(200),
@@ -25,7 +24,6 @@ const baseSchema = z.object({
   }),
 });
 
-// 3. Use .extend() instead of spreading plain objects
 export const hostelSchema = baseSchema.extend({
   listingType: z.literal("hostel"),
   pricing: z.object({
@@ -46,7 +44,6 @@ export const hostelSchema = baseSchema.extend({
       ]),
     )
     .min(1),
-  // Overwriting the contact object is perfectly valid with .extend()
   contact: z.object({
     phone: z.string().regex(/^\d{10}$/),
     email: z.string().email().optional(),
@@ -71,6 +68,4 @@ export const listingSchema = z.discriminatedUnion("listingType", [
 
 export type CreateListingFormData = HostelFormData | PrivateFormData;
 
-// 4. Because we removed .default(), you no longer need the Omit hack!
-// z.infer will output strict, perfect types.
 export type ListingFormData = z.infer<typeof listingSchema>;

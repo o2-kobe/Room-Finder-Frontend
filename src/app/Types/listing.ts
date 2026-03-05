@@ -48,8 +48,6 @@ export interface ListingDocument {
   updatedAt: Date;
 }
 
-//Types used in API functions
-
 export interface ListingFilters {
   listingType?: "hostel" | "private" | undefined;
   availabilityStatus?: "available" | "inactive" | undefined;

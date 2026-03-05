@@ -56,7 +56,7 @@ api.interceptors.response.use(
   async (error) => {
     const originalRequest = error.config;
 
-    // ❌ Never attempt refresh for refresh endpoint itself
+    //  Never attempt refresh for refresh endpoint itself
     if (originalRequest.url?.includes("/sessions/refresh")) {
       return Promise.reject(error);
     }
@@ -80,7 +80,7 @@ api.interceptors.response.use(
 
         const newAccessToken = data.accessToken;
 
-        // 🔥 Store new access token in memory
+        //  Store new access token in memory
         setAccessToken(newAccessToken);
 
         // Resolve queued requests

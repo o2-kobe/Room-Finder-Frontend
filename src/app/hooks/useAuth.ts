@@ -17,6 +17,6 @@ export function useCurrentUser() {
     queryFn: getCurrentUser,
     refetchOnWindowFocus: false,
     retry: false,
-    staleTime: 0, // always verify on mount
+    staleTime: 0,
   });
 }
