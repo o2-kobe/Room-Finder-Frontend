@@ -36,10 +36,13 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         queryClient.setQueryData(["currentUser"], userData);
         toast.success("Login successful");
       } catch (err: any) {
-        toast.success(err?.message);
-        console.error("Failed to fetch user after login", err);
         throw err;
       }
+    },
+    onError: (error: any) => {
+      toast.error(
+        error?.response?.data?.message || error?.message || "Failed to Login",
+      );
     },
   });
 

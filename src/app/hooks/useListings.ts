@@ -17,6 +17,7 @@ import {
   updateListingPrice,
 } from "../services/apiListings";
 import { type ListingFilters } from "../Types/listing";
+import { toast } from "sonner";
 
 export function useListings(filters: ListingFilters) {
   return useInfiniteQuery({
@@ -65,6 +66,14 @@ export function useCreateListing() {
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["listings"] });
       queryClient.invalidateQueries({ queryKey: ["map-listings"] });
+      toast.success("Listing added successfully!");
+    },
+    onError: (error: any) => {
+      toast.error(
+        error?.response?.data?.message ||
+          error?.message ||
+          "Failed to add Listing",
+      );
     },
   });
 }
@@ -79,6 +88,14 @@ export function useUpdateListing() {
       queryClient.invalidateQueries({ queryKey: ["listings"] });
       queryClient.invalidateQueries({ queryKey: ["map-listings"] });
       queryClient.invalidateQueries({ queryKey: ["listing", variables.id] });
+      toast.success("Listing updated successfully!");
+    },
+    onError: (error: any) => {
+      toast.error(
+        error?.response?.data?.message ||
+          error?.message ||
+          "Failed to update Listing",
+      );
     },
   });
 }
@@ -93,6 +110,14 @@ export function useDeleteListing() {
       queryClient.invalidateQueries({ queryKey: ["listings"] });
       queryClient.invalidateQueries({ queryKey: ["map-listings"] });
       queryClient.invalidateQueries({ queryKey: ["listingofOwner"] });
+      toast.success("Listing deleted successfully!");
+    },
+    onError: (error: any) => {
+      toast.error(
+        error?.response?.data?.message ||
+          error?.message ||
+          "Failed to delete Listing",
+      );
     },
   });
 }
@@ -106,6 +131,14 @@ export function useMarkListingAsAvailable() {
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["listings"] });
       queryClient.invalidateQueries({ queryKey: ["listingofOwner"] });
+      toast.success("Listing successfully marked available!");
+    },
+    onError: (error: any) => {
+      toast.error(
+        error?.response?.data?.message ||
+          error?.message ||
+          "Failed to update Listing",
+      );
     },
   });
 }
@@ -119,6 +152,14 @@ export function useMarkListingAsInactive() {
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["listings"] });
       queryClient.invalidateQueries({ queryKey: ["listingofOwner"] });
+      toast.success("Listing successfully marked inactive!");
+    },
+    onError: (error: any) => {
+      toast.error(
+        error?.response?.data?.message ||
+          error?.message ||
+          "Failed to update Listing",
+      );
     },
   });
 }
@@ -139,6 +180,14 @@ export function useUpdateListingPrice() {
       queryClient.invalidateQueries({ queryKey: ["listings"] });
       queryClient.invalidateQueries({ queryKey: ["listingofOwner"] });
       queryClient.invalidateQueries({ queryKey: ["map-listings"] });
+      toast.success("Listing price updated successfully!");
+    },
+    onError: (error: any) => {
+      toast.error(
+        error?.response?.data?.message ||
+          error?.message ||
+          "Failed to update Listing",
+      );
     },
   });
 }

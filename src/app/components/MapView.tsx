@@ -6,6 +6,8 @@ import { StatusBadge } from "./StatusBadge";
 import { MapPin } from "lucide-react";
 import { useNavigate } from "react-router";
 
+const BASE_IMAGE_URL = "http://localhost:5000";
+
 interface MapViewProps {
   listings: ListingDocument[];
   center?: LatLngExpression;
@@ -76,6 +78,8 @@ export function MapView({
   height = "400px",
 }: MapViewProps) {
   const navigate = useNavigate();
+  console.log(listings);
+
   return (
     <div
       style={{ height, width: "100%" }}
@@ -107,7 +111,7 @@ export function MapView({
                   <h4 className="text-sm mb-1">{listing.title}</h4>
 
                   <img
-                    src="room.png"
+                    src={`${BASE_IMAGE_URL}${listing?.images[0]}`}
                     alt={listing.title}
                     className="h-[100px] w-[400px]"
                   />

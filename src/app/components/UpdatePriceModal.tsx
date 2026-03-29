@@ -1,6 +1,5 @@
 import { Info } from "lucide-react";
 import { useState } from "react";
-import { toast } from "sonner";
 
 interface UpdatePriceModalProps {
   currentPrice: number;
@@ -44,12 +43,7 @@ export function UpdatePriceModal({
 
           <button
             onClick={() => {
-              try {
-                onSubmit(price);
-                toast.success("Listing updated successfully");
-              } catch {
-                toast.error("Failed to update listing");
-              }
+              onSubmit(price);
             }}
             className="px-3 py-1 text-sm bg-blue-600 text-white rounded-lg hover:bg-blue-700"
           >
