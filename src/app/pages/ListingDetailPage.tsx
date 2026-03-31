@@ -75,16 +75,16 @@ const ListingDetailPage = () => {
         {/* Header Info */}
         <div>
           <div className="flex items-start justify-between gap-4 mb-3">
-            <h1 className="text-2xl">{listing.title}</h1>
+            <h1 className="text-2xl capitalize">{listing.title}</h1>
             <StatusBadge status={listing.availabilityStatus} />
           </div>
 
-          <div className="flex items-center gap-2 text-muted-foreground mb-2">
+          <div className="flex items-center gap-2 text-muted-foreground mb-2 capitalize">
             <MapPin className="w-5 h-5" />
             <span>{listing.location?.area}</span>
           </div>
 
-          <div className="flex items-center gap-2 text-muted-foreground mb-2">
+          <div className="flex items-center gap-2 text-muted-foreground mb-2 capitalize">
             <University className="w-5 h-5" />
             <span>{listing.location?.university}</span>
           </div>

@@ -35,11 +35,11 @@ export function ListingCard({ listing, onClick }: ListingCardProps) {
             {convertToTitleCase(listing.title)}
           </h3>
 
-          <div className="flex items-center gap-1 text-sm text-muted-foreground">
+          <div className="flex items-center gap-1 text-sm text-muted-foreground capitalize">
             <MapPin className="w-4 h-4" />
             <span className="line-clamp-1">{listing.location.area}</span>
           </div>
-          <div className="flex items-center gap-1 text-sm text-muted-foreground">
+          <div className="flex items-center gap-1 text-sm text-muted-foreground capitalize">
             <University className="w-4 h-4" />
             <UniversitySpan name={listing.location.university} />
           </div>
