@@ -1,24 +1,23 @@
 import LoginForm from "../components/AuthForm";
-import { createUser, type CreateUserInput } from "../services/apiUser";
-import { useNavigate } from "react-router";
+import { useAuth } from "../hooks/useAuth";
+import { type CreateUserInput } from "../services/apiUser";
 
 const AuthForm = () => {
-  const navigate = useNavigate();
+  const { signup } = useAuth();
 
-  const signup = async (formData: any) => {
+  const createAccount = async (formData: any) => {
     const { username, ...rest } = formData;
     const payload: CreateUserInput = {
       username,
       ...rest,
     };
 
-    await createUser(payload);
-    navigate("/");
+    signup(payload);
   };
 
   return (
     <div>
-      <LoginForm submitFn={signup} type="signup" />
+      <LoginForm submitFn={createAccount} type="signup" />
     </div>
   );
 };
