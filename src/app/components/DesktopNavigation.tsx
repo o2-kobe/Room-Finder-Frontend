@@ -1,9 +1,12 @@
 import { useNavigate, useLocation } from "react-router";
 import { Home, Map, PlusCircle, User } from "lucide-react";
+import { useAuth } from "../hooks/useAuth";
 
 export function DesktopNavigation() {
   const navigate = useNavigate();
   const location = useLocation();
+  const { user, isAuthenticated } = useAuth();
+  const allowedRoles = ["hostelManager", "landlord"];
 
   const navItems = [
     { icon: Home, label: "Explore", path: "/explore" },
@@ -37,6 +40,11 @@ export function DesktopNavigation() {
             {navItems.map((item) => {
               const Icon = item.icon;
               const active = isActive(item.path);
+
+              if (item.label === "Add Listing") {
+                if (!isAuthenticated || !allowedRoles.includes(user?.role))
+                  return null;
+              }
 
               return (
                 <button

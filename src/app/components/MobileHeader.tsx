@@ -11,7 +11,7 @@ const MobileHeader = ({
 }) => {
   const navigate = useNavigate();
   return (
-    <header className="bg-white border-b border-border px-4 py-4 flex-shrink-0 md:hidden">
+    <header className="bg-white border-b border-border px-4 py-4 flex-shrink-0 md:hidden shadow-md">
       <div className="max-w-screen-xl mx-auto flex items-center justify-between">
         <div className="flex items-center gap-3">
           <button
