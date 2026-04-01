@@ -78,7 +78,6 @@ export function MapView({
   height = "400px",
 }: MapViewProps) {
   const navigate = useNavigate();
-  console.log(listings);
 
   return (
     <div
