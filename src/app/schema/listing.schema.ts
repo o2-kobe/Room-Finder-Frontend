@@ -43,8 +43,8 @@ export const hostelSchema = baseSchema.extend({
   listingType: z.literal("hostel"),
   pricing: z.object({
     priceRange: z.object({
-      min: z.number().positive(),
-      max: z.number().positive(),
+      min: z.number().positive("Minimum Price must be greater than 0"),
+      max: z.number().positive("Maximum Price must be greater than 0"),
     }),
   }),
   roomTypes: z
@@ -69,7 +69,9 @@ export const hostelSchema = baseSchema.extend({
 export const privateSchema = baseSchema.extend({
   listingType: z.literal("private"),
   pricing: z.object({
-    monthlyPrice: z.number().positive(),
+    monthlyPrice: z
+      .number()
+      .positive("Monthly Rent Price must be greater than 0"),
   }),
 });
 

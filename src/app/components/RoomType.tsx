@@ -11,11 +11,13 @@ interface HasRoomTypes {
 interface RoomTypeProps<T extends FieldValues & HasRoomTypes> {
   register: UseFormRegister<T>;
   selected?: string[];
+  error?: string | undefined;
 }
 
 export default function RoomType<T extends FieldValues & HasRoomTypes>({
   register,
   selected = [],
+  error,
 }: RoomTypeProps<T>) {
   const ROOM_OPTIONS = [
     { label: "Single (1 in a room)", value: "1-in-a-room" },
@@ -47,6 +49,8 @@ export default function RoomType<T extends FieldValues & HasRoomTypes>({
           </div>
         </div>
       ))}
+
+      {error && <span className="text-sm text-red-500">{error}</span>}
     </div>
   );
 }

@@ -185,7 +185,11 @@ export default function HostelListingForm({ goBack }: { goBack: () => void }) {
           />
         </div>
 
-        <RoomType register={register} selected={watch("roomTypes")} />
+        <RoomType
+          register={register}
+          selected={watch("roomTypes")}
+          error={errors?.roomTypes?.message}
+        />
 
         <div className="bg-white rounded-2xl p-6 shadow-sm space-y-4">
           <h4>Price Range *</h4>
