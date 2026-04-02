@@ -57,26 +57,31 @@ export default function HostelListingForm({ goBack }: { goBack: () => void }) {
   });
 
   const onSubmit: SubmitHandler<HostelFormData> = async (data) => {
-    toast.loading("Creating Hostel Listing");
-    const formData = new FormData();
+    try {
+      toast.loading("Creating Hostel Listing");
+      const formData = new FormData();
 
-    formData.append("title", data.title);
-    formData.append("description", data.description);
-    formData.append("listingType", "hostel");
-    formData.append("amenities", JSON.stringify(data.amenities));
-    formData.append("location", JSON.stringify(data.location));
-    formData.append("pricing", JSON.stringify(data.pricing));
-    formData.append("roomTypes", JSON.stringify(data.roomTypes));
-    formData.append("availabilityStatus", data.availabilityStatus);
-    formData.append("contact", JSON.stringify(data.contact));
+      formData.append("title", data.title);
+      formData.append("description", data.description);
+      formData.append("listingType", "hostel");
+      formData.append("amenities", JSON.stringify(data.amenities));
+      formData.append("location", JSON.stringify(data.location));
+      formData.append("pricing", JSON.stringify(data.pricing));
+      formData.append("roomTypes", JSON.stringify(data.roomTypes));
+      formData.append("availabilityStatus", data.availabilityStatus);
+      formData.append("contact", JSON.stringify(data.contact));
 
-    selectedFiles.forEach((file) => {
-      formData.append("images", file);
-    });
+      selectedFiles.forEach((file) => {
+        formData.append("images", file);
+      });
 
-    await api.post("/listings", formData);
-    navigate("/");
-    toast.dismiss();
+      await api.post("/listings", formData);
+      navigate("/");
+      toast.dismiss();
+      toast.success("Listing added successfully");
+    } catch (error: any) {
+      toast.error(error?.response?.data.message || "Failed to add Listing");
+    }
   };
 
   return (
