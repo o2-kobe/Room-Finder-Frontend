@@ -1,5 +1,4 @@
 import { AlertTriangle } from "lucide-react";
-import { toast } from "sonner";
 
 interface ConfirmDeleteModalProps {
   title?: string;
@@ -39,12 +38,7 @@ export function ConfirmDeleteModal({
 
           <button
             onClick={() => {
-              try {
-                onConfirm();
-                toast.success("Listing Deleted successfully");
-              } catch {
-                toast.error("Could not delete listing");
-              }
+              onConfirm();
             }}
             disabled={isLoading}
             className="px-4 py-2 text-sm bg-red-600 text-white rounded-lg hover:bg-red-700 transition disabled:opacity-60"
