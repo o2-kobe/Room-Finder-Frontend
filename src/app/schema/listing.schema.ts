@@ -6,21 +6,36 @@ const coordinatesSchema = z.object({
 });
 
 const locationSchema = z.object({
-  area: z.string().min(2).max(20),
-  university: z.string().min(10),
-  address: z.string().min(5).optional(),
+  area: z
+    .string()
+    .min(2, "Area must be at least 2 characters")
+    .max(20, "Area cannot exceed 20 characters"),
+  university: z.string().min(10, "University must be at least 10 characters"),
+  address: z
+    .string()
+    .min(5, "Address must be at least 5 characters")
+    .optional(),
   coordinates: coordinatesSchema,
 });
 
 const baseSchema = z.object({
-  title: z.string().min(10).max(100),
-  description: z.string().min(10).max(200),
-  images: z.array(z.instanceof(File)).max(3).optional(),
+  title: z
+    .string()
+    .min(10, "Title must be at least 10 characters")
+    .max(100, "Title cannot exceed 100 characters"),
+  description: z
+    .string()
+    .min(10, "Description must be at least 10 characters")
+    .max(200, "Description cannot exceed 200 characters"),
+  images: z
+    .array(z.instanceof(File), "At least one image should be provided")
+    .max(3, "Images cannot be more than 3")
+    .optional(),
   amenities: z.array(z.string().min(2)).max(6),
   location: locationSchema,
   availabilityStatus: z.enum(["available", "inactive"]),
   contact: z.object({
-    phone: z.string().regex(/^\d{10}$/),
+    phone: z.string().regex(/^\d{10}$/, "Phone number be 10 digits"),
   }),
 });
 
@@ -43,9 +58,9 @@ export const hostelSchema = baseSchema.extend({
         "Exclusive",
       ]),
     )
-    .min(1),
+    .min(1, "Select at least one room type"),
   contact: z.object({
-    phone: z.string().regex(/^\d{10}$/),
+    phone: z.string().regex(/^\d{10}$/, "Phone number be 10 digits"),
     email: z.string().email().optional(),
     website: z.string().url().optional().or(z.literal("")),
   }),
