@@ -80,6 +80,7 @@ export default function HostelListingForm({ goBack }: { goBack: () => void }) {
       toast.dismiss();
       toast.success("Listing added successfully");
     } catch (error: any) {
+      toast.dismiss();
       toast.error(error?.response?.data.message || "Failed to add Listing");
     }
   };
