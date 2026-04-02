@@ -74,9 +74,10 @@ export default function ImageUpload<T extends FieldValues & HasImages>({
         />
         <Upload className="w-12 h-12 mx-auto mb-2 text-muted-foreground" />
         {files.length === 0 && (
-          <p className="text-sm text-muted-foreground">
-            Click to upload (Maximum 3 images)
-          </p>
+          <div className="text-sm text-muted-foreground">
+            Click to upload (Maximum 3 images)*{" "}
+            <p>At least One image is required</p>
+          </div>
         )}
 
         {files.length > 0 && (
